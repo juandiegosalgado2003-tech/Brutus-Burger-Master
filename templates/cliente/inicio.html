@@ -600,14 +600,36 @@
         <div class="prod-img">
           {% if p.imagen %}
             <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
-          {% elif p.categoria.nombre == 'Hamburguesas' %}
+          {% elif 'Clásica' in p.nombre or 'Clasica' in p.nombre %}
             <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" alt="{{ p.nombre }}">
-          {% elif p.categoria.nombre == 'Bebidas' %}
-            <img src="https://images.unsplash.com/photo-1622483767028-fd167959c73d?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Bacon' in p.nombre and 'Combo' not in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Monster' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1586816001966-79b736744398?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Blue' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1594212202214-726dbdfd77af?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Doble' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Ranchera' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Veggie' in p.nombre or 'Vegetariana' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1520072959219-c595dc870360?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Chicken' in p.nombre or 'Pollo' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Combo Clásico' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Combo Pareja' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Combo Bacon' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1615719413546-198b25453f85?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Combo Familiar' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?w=400&q=80" alt="{{ p.nombre }}">
           {% elif p.categoria.nombre == 'Papas' %}
             <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif p.categoria.nombre == 'Bebidas' %}
+            <img src="https://images.unsplash.com/photo-1622483767028-fd167959c73d?w=400&q=80" alt="{{ p.nombre }}">
           {% else %}
-            <img src="https://images.unsplash.com/photo-1594212202214-726dbdfd77af?w=400&q=80" alt="{{ p.nombre }}">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" alt="{{ p.nombre }}">
           {% endif %}
           <div class="prod-badge">Destacado</div>
         </div>
@@ -635,14 +657,36 @@
         <div class="prod-img">
           {% if p.imagen %}
             <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
-          {% elif cat.nombre == 'Hamburguesas' %}
+          {% elif 'Clásica' in p.nombre or 'Clasica' in p.nombre %}
             <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" alt="{{ p.nombre }}">
-          {% elif cat.nombre == 'Bebidas' %}
-            <img src="https://images.unsplash.com/photo-1622483767028-fd167959c73d?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Bacon' in p.nombre and 'Combo' not in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Monster' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1586816001966-79b736744398?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Blue' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1594212202214-726dbdfd77af?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Doble' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Ranchera' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Veggie' in p.nombre or 'Vegetariana' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1520072959219-c595dc870360?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Chicken' in p.nombre or 'Pollo' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Combo Clásico' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Combo Pareja' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Combo Bacon' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1615719413546-198b25453f85?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif 'Combo Familiar' in p.nombre %}
+            <img src="https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?w=400&q=80" alt="{{ p.nombre }}">
           {% elif cat.nombre == 'Papas' %}
             <img src="https://images.unsplash.com/photo-1576107232684-1279f390859f?w=400&q=80" alt="{{ p.nombre }}">
+          {% elif cat.nombre == 'Bebidas' %}
+            <img src="https://images.unsplash.com/photo-1622483767028-fd167959c73d?w=400&q=80" alt="{{ p.nombre }}">
           {% else %}
-            <img src="https://images.unsplash.com/photo-1594212202214-726dbdfd77af?w=400&q=80" alt="{{ p.nombre }}">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" alt="{{ p.nombre }}">
           {% endif %}
         </div>
         <div class="prod-body">
@@ -800,16 +844,16 @@ function renderCart(){
   footer.style.display='block';
 }
 
-function chg(id,d){
-  const idx = cart.findIndex(i=>i.id===id);
-  if(idx<0) return;
-  cart[idx].qty+=d;
-  if(cart[idx].qty<=0) cart.splice(idx,1);
+function openCart(){ document.getElementById('cartOverlay').classList.add('open'); }
+function closeCart(){ document.getElementById('cartOverlay').classList.remove('open'); }
+function chg(id, d){
+  const idx = cart.findIndex(i => i.id === id);
+  if(idx >= 0){ 
+    cart[idx].qty += d; 
+    if(cart[idx].qty <= 0) cart.splice(idx,1); 
+  }
   save(); renderCart();
 }
-
-function openCart(){ document.getElementById('cartOverlay').classList.add('open'); renderCart(); }
-function closeCart(){ document.getElementById('cartOverlay').classList.remove('open'); }
 
 renderCart();
 </script>

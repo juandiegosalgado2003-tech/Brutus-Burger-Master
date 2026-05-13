@@ -78,4 +78,50 @@ def detalle_pedido(request, pk):
         form_estado.save()
         messages.success(request, 'Estado actualizado.')
         return redirect('panel_personal')
-    return render(request, 'pedidos/detalle.html', {'pedido': pedido, 'form_estado': form_estado})
+    productos = Producto.objects.filter(disponible=True).order_by('categoria__nombre', 'nombre')
+    return render(request, 'pedidos/detalle.html', {'pedido': pedido, 'form_estado': form_estado, 'productos': productos})
+
+@login_required
+@require_POST
+def eliminar_item_pedido(request, item_id):
+    item = get_object_or_404(DetallePedido, pk=item_id)
+    pedido = item.pedido
+    item.delete()
+    pedido.calcular_total()
+    messages.success(request, 'Producto eliminado del pedido.')
+    return redirect('detalle_pedido', pk=pedido.pk)
+
+@login_required
+@require_POST
+def agregar_item_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, pk=pedido_id)
+    producto_id = request.POST.get('producto_id')
+    cantidad = int(request.POST.get('cantidad', 1))
+    
+    if producto_id and cantidad > 0:
+        producto = get_object_or_404(Producto, pk=producto_id)
+        # Check if item already exists in order
+        item_existente = pedido.items.filter(producto=producto).first()
+        if item_existente:
+            item_existente.cantidad += cantidad
+            item_existente.save()
+        else:
+            DetallePedido.objects.create(
+                pedido=pedido,
+                producto=producto,
+                cantidad=cantidad,
+                precio_unitario=producto.precio
+            )
+        pedido.calcular_total()
+        messages.success(request, f'{producto.nombre} agregado al pedido.')
+    return redirect('detalle_pedido', pk=pedido.pk)
+
+@login_required
+@require_POST
+def editar_comentario_item(request, item_id):
+    item = get_object_or_404(DetallePedido, pk=item_id)
+    notas = request.POST.get('notas', '')
+    item.notas = notas
+    item.save()
+    messages.success(request, f'Comentario actualizado para {item.producto.nombre}.')
+    return redirect('detalle_pedido', pk=item.pedido.pk)

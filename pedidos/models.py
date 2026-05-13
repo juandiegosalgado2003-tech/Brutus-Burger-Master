@@ -45,6 +45,7 @@ class DetallePedido(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
     cantidad = models.PositiveIntegerField(default=1)
     precio_unitario = models.DecimalField(max_digits=10, decimal_places=2)
+    notas = models.CharField(max_length=200, blank=True, help_text='Ej: Sin cebolla')
 
     def subtotal(self):
         return self.cantidad * self.precio_unitario

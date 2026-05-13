@@ -23,22 +23,51 @@
     <div class="card-dark" style="overflow:hidden;">
       <div style="padding:1rem 1.5rem; border-bottom:1px solid var(--border);"><h4 style="margin:0;">🛒 Productos</h4></div>
       <table class="table-dark-custom">
-        <thead><tr><th>Producto</th><th>Cant.</th><th>Precio</th><th>Subtotal</th></tr></thead>
+        <thead><tr><th>Producto</th><th>Cant.</th><th>Precio</th><th>Subtotal</th><th>Acciones</th></tr></thead>
         <tbody>
           {% for item in pedido.items.all %}
           <tr>
-            <td>{{ item.producto.nombre }}</td>
+            <td>
+              <div style="font-weight:bold;">{{ item.producto.nombre }}</div>
+              <form method="POST" action="{% url 'editar_comentario_item' item.pk %}" style="display:flex; gap:0.5rem; margin-top:0.3rem;">
+                {% csrf_token %}
+                <input type="text" name="notas" value="{{ item.notas }}" placeholder="Comentarios..." class="form-control" style="padding:0.2rem 0.5rem; font-size:0.8rem;">
+                <button type="submit" class="btn-outline-custom btn-sm-custom" style="padding:0.2rem 0.5rem;"><i class="bi bi-save"></i></button>
+              </form>
+            </td>
             <td>{{ item.cantidad }}</td>
             <td>${{ item.precio_unitario|floatformat:0 }}</td>
             <td style="color:var(--accent);font-weight:700;">${{ item.subtotal|floatformat:0 }}</td>
+            <td>
+              <form method="POST" action="{% url 'eliminar_item_pedido' item.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger btn-sm-custom" style="padding:0.2rem 0.5rem; border-radius:4px;" onclick="return confirm('¿Eliminar {{ item.producto.nombre }}?');"><i class="bi bi-trash"></i></button>
+              </form>
+            </td>
           </tr>
           {% endfor %}
           <tr style="background:var(--bg-card2);">
             <td colspan="3" style="font-weight:700;">TOTAL</td>
-            <td style="color:var(--accent);font-size:1.1rem;font-weight:800;">${{ pedido.total|floatformat:0 }}</td>
+            <td colspan="2" style="color:var(--accent);font-size:1.1rem;font-weight:800;">${{ pedido.total|floatformat:0 }}</td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Agregar nuevo producto -->
+    <div class="card-dark p-3 mt-3">
+      <h4 style="color:var(--accent); margin-bottom:1rem;">➕ Agregar Producto</h4>
+      <form method="POST" action="{% url 'agregar_item_pedido' pedido.pk %}" style="display:flex; gap:1rem; align-items:center;">
+        {% csrf_token %}
+        <select name="producto_id" class="form-control" required style="flex:1;">
+          <option value="">Seleccionar producto...</option>
+          {% for prod in productos %}
+          <option value="{{ prod.pk }}">{{ prod.nombre }} - ${{ prod.precio|floatformat:0 }}</option>
+          {% endfor %}
+        </select>
+        <input type="number" name="cantidad" value="1" min="1" class="form-control" style="width:80px;" required>
+        <button type="submit" class="btn-accent">Agregar</button>
+      </form>
     </div>
   </div>
 
