@@ -1,14 +1,15 @@
 import os
+from pathlib import Path
 from decouple import config
 import dj_database_url
 
 # ================== BASE ==================
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['*']   # Cambiaremos esto después
+ALLOWED_HOSTS = ['*']   # Cambiaremos esto después por tu dominio de Render
 
 # ================== APPS ==================
 INSTALLED_APPS = [
@@ -18,7 +19,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic',   # ← Agregar
+
+    # Whitenoise
+    'whitenoise.runserver_nostatic',
 
     # Tus apps
     'menu',
@@ -31,7 +34,7 @@ INSTALLED_APPS = [
 # ================== MIDDLEWARE ==================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',   # ← Agregar aquí
+    'whitenoise.middleware.WhiteNoiseMiddleware',   # ← Muy importante
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -42,10 +45,14 @@ MIDDLEWARE = [
 
 # ================== DATABASE ==================
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
-# ================== STATIC FILES ==================
+# ================== STATIC & MEDIA FILES ==================
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -56,4 +63,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # ================== OTRAS CONFIGURACIONES ==================
 LANGUAGE_CODE = 'es-co'
 TIME_ZONE = 'America/Bogota'
+USE_I18N = True
 USE_TZ = True
+
+# Seguridad adicional para Render
+CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
+
+# ================== AUTH ==================
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
