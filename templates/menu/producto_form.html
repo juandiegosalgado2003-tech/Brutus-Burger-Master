@@ -1,0 +1,28 @@
+{% extends 'base_personal.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<div style="max-width:580px; margin:0 auto;">
+  <div class="flex-between mb-3">
+    <h2 style="color:var(--gold);">{{ titulo }}</h2>
+    <a href="/personal/carta/" class="btn-outline-custom"><i class="bi bi-arrow-left"></i> Volver</a>
+  </div>
+  <div class="card-dark p-3">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="mb-2">
+        <label class="form-label-dark">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<div style="color:var(--danger);font-size:0.82rem;margin-top:0.3rem;">{{ field.errors }}</div>{% endif %}
+        {% if field.help_text %}<div style="color:var(--text-muted);font-size:0.78rem;margin-top:0.2rem;">{{ field.help_text }}</div>{% endif %}
+      </div>
+      {% endfor %}
+      <hr class="divider">
+      <div style="display:flex;gap:0.5rem;">
+        <button type="submit" class="btn-accent"><i class="bi bi-check-circle"></i> Guardar</button>
+        <a href="/personal/carta/" class="btn-outline-custom">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base_cliente.html' %}
+{% block title %}Pedido Confirmado{% endblock %}
+{% block content %}
+<div class="container section" style="max-width:500px; margin:0 auto; text-align:center; padding-top:3rem;">
+  <div style="font-size:5rem; margin-bottom:1rem;">✅</div>
+  <h2 style="color:var(--success);">¡Pedido confirmado!</h2>
+  <p class="text-muted mb-3">Tu pedido #{{ pedido.pk }} está siendo procesado</p>
+
+  <div class="card-dark p-3 mb-3" style="text-align:left;">
+    <div class="flex-between mb-1">
+      <span class="text-muted">Cliente:</span>
+      <span class="fw-bold">{{ pedido.cliente_nombre }}</span>
+    </div>
+    {% if pedido.mesa %}
+    <div class="flex-between mb-1">
+      <span class="text-muted">Mesa:</span>
+      <span class="fw-bold">Mesa {{ pedido.mesa.numero }}</span>
+    </div>
+    {% endif %}
+    <div class="flex-between mb-1">
+      <span class="text-muted">Pago:</span>
+      <span class="fw-bold">{{ pedido.get_metodo_pago_display }}</span>
+    </div>
+    <hr class="divider">
+    {% for item in pedido.items.all %}
+    <div class="flex-between" style="padding:0.3rem 0;">
+      <span>{{ item.cantidad }}× {{ item.producto.nombre }}</span>
+      <span style="color:var(--accent);">${{ item.subtotal|floatformat:0 }}</span>
+    </div>
+    {% endfor %}
+    <hr class="divider">
+    <div class="flex-between">
+      <span class="fw-bold">Total:</span>
+      <span style="color:var(--accent);font-size:1.3rem;font-weight:800;">${{ pedido.total|floatformat:0 }}</span>
+    </div>
+  </div>
+
+  <a href="/" class="btn-accent" style="justify-content:center; width:100%; margin-bottom:0.5rem;">
+    <i class="bi bi-house"></i> Volver al inicio
+  </a>
+</div>
+{% endblock %}

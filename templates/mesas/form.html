@@ -1,0 +1,23 @@
+{% extends 'base_personal.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+{% block content %}
+<div style="max-width:400px; margin:0 auto;">
+  <div class="flex-between mb-3">
+    <h2 style="color:var(--gold);">{{ titulo }}</h2>
+    <a href="/personal/mesas/" class="btn-outline-custom"><i class="bi bi-arrow-left"></i> Volver</a>
+  </div>
+  <div class="card-dark p-3">
+    <form method="POST">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="mb-2">
+        <label class="form-label-dark">{{ field.label }}</label>
+        {{ field }}
+      </div>
+      {% endfor %}
+      <hr class="divider">
+      <button type="submit" class="btn-accent"><i class="bi bi-check-circle"></i> Guardar</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

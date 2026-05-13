@@ -1,0 +1,52 @@
+{% extends 'base_personal.html' %}
+{% block title %}Reportes{% endblock %}
+{% block content %}
+<h2 style="color:var(--gold); margin-bottom:1.5rem;">📊 Reportes — {{ hoy|date:"d/m/Y" }}</h2>
+
+<div class="grid-3 mb-3">
+  <div class="stat-card">
+    <div class="stat-label">💰 Ventas hoy</div>
+    <div class="stat-value">${{ ventas_hoy.total|default:"0"|floatformat:0 }}</div>
+    <div class="stat-sub">{{ ventas_hoy.cantidad|default:"0" }} pedidos entregados</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">📅 Ventas 7 días</div>
+    <div class="stat-value">${{ ventas_semana.total|default:"0"|floatformat:0 }}</div>
+    <div class="stat-sub">{{ ventas_semana.cantidad|default:"0" }} pedidos</div>
+  </div>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+  <div class="card-dark" style="overflow:hidden;">
+    <div style="padding:1rem 1.5rem; border-bottom:1px solid var(--border);"><h4 style="margin:0;">🏆 Top productos (30 días)</h4></div>
+    <table class="table-dark-custom">
+      <thead><tr><th>Producto</th><th>Unidades</th><th>Ingresos</th></tr></thead>
+      <tbody>
+        {% for p in top_productos %}
+        <tr>
+          <td style="font-weight:600;">{{ p.nombre }}</td>
+          <td>{{ p.total_vendido }}</td>
+          <td style="color:var(--accent);">${{ p.ingresos|floatformat:0 }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:1.5rem;">Sin datos aún</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card-dark" style="overflow:hidden;">
+    <div style="padding:1rem 1.5rem; border-bottom:1px solid var(--border);"><h4 style="margin:0;">📋 Pedidos de hoy</h4></div>
+    <div style="padding:1rem 1.5rem;">
+      {% for pe in pedidos_hoy %}
+      <div class="flex-between" style="padding:0.5rem 0; border-bottom:1px solid var(--border);">
+        <span style="text-transform:capitalize;">{{ pe.estado }}</span>
+        <strong style="color:var(--accent);">{{ pe.cantidad }}</strong>
+      </div>
+      {% empty %}
+      <p class="text-muted text-center" style="padding:1rem 0;">Sin pedidos hoy</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

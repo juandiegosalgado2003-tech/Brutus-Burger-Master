@@ -1,0 +1,55 @@
+{% extends 'base_personal.html' %}
+{% block title %}Gestión de Carta{% endblock %}
+{% block content %}
+<div class="flex-between mb-3">
+  <h2 style="color:var(--gold);">📖 Gestión de Carta</h2>
+  <div style="display:flex;gap:0.5rem;">
+    <a href="/personal/carta/categoria/nueva/" class="btn-outline-custom"><i class="bi bi-folder-plus"></i> Nueva categoría</a>
+    <a href="/personal/carta/producto/nuevo/" class="btn-accent"><i class="bi bi-plus-circle"></i> Nuevo producto</a>
+  </div>
+</div>
+
+{% for cat in categorias %}
+<div class="card-dark mb-3" style="overflow:hidden;">
+  <div style="padding:0.75rem 1.5rem; background:var(--bg-card2); display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border);">
+    <h4 style="margin:0; color:var(--accent);">{{ cat.icono }} {{ cat.nombre }}</h4>
+    <a href="/personal/carta/categoria/{{ cat.pk }}/editar/" class="btn-outline-custom btn-sm-custom"><i class="bi bi-pencil"></i> Editar categoría</a>
+  </div>
+  {% if cat.productos.all %}
+  <table class="table-dark-custom">
+    <thead><tr><th>Producto</th><th>Precio</th><th>Disponible</th><th>Destacado</th><th></th></tr></thead>
+    <tbody>
+      {% for p in cat.productos.all %}
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:0.75rem;">
+            {% if p.imagen %}<img src="{{ p.imagen.url }}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;">{% endif %}
+            <div>
+              <div style="font-weight:600;">{{ p.nombre }}</div>
+              <div style="color:var(--text-muted);font-size:0.8rem;">{{ p.descripcion|truncatechars:50 }}</div>
+            </div>
+          </div>
+        </td>
+        <td style="color:var(--accent);font-weight:700;">${{ p.precio|floatformat:0 }}</td>
+        <td>{% if p.disponible %}<span class="badge-success">Sí</span>{% else %}<span class="badge-danger">No</span>{% endif %}</td>
+        <td>{% if p.destacado %}<span class="badge-warning">⭐ Sí</span>{% else %}<span class="text-muted">No</span>{% endif %}</td>
+        <td style="display:flex;gap:0.4rem;">
+          <a href="/personal/carta/producto/{{ p.pk }}/editar/" class="btn-outline-custom btn-sm-custom"><i class="bi bi-pencil"></i></a>
+          <a href="/personal/carta/producto/{{ p.pk }}/eliminar/" class="btn-danger-custom btn-sm-custom"><i class="bi bi-trash"></i></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div style="padding:1.5rem; text-align:center; color:var(--text-muted);">Sin productos en esta categoría. <a href="/personal/carta/producto/nuevo/" style="color:var(--accent);">Agregar uno</a></div>
+  {% endif %}
+</div>
+{% empty %}
+<div class="card-dark p-3 text-center">
+  <div style="font-size:3rem; margin-bottom:1rem;">📖</div>
+  <p class="text-muted">La carta está vacía. Comienza creando una categoría.</p>
+  <a href="/personal/carta/categoria/nueva/" class="btn-accent">Crear primera categoría</a>
+</div>
+{% endfor %}
+{% endblock %}

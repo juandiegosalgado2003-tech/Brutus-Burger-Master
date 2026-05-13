@@ -1,0 +1,28 @@
+{% extends 'base_personal.html' %}
+{% block title %}Mesas{% endblock %}
+{% block content %}
+<div class="flex-between mb-3">
+  <h2 style="color:var(--gold);">🪑 Mesas</h2>
+  <a href="/personal/mesas/nueva/" class="btn-accent"><i class="bi bi-plus"></i> Nueva mesa</a>
+</div>
+<div class="grid-3">
+  {% for m in mesas %}
+  <div class="card-dark p-3 text-center" style="border-top:3px solid {% if m.disponible %}var(--success){% else %}var(--danger){% endif %};">
+    <div style="font-size:2.5rem; font-weight:900; color:var(--text);">{{ m.numero }}</div>
+    <div class="text-muted mb-1" style="font-size:0.85rem;">{{ m.capacidad }} personas</div>
+    <div class="mb-2">
+      {% if m.disponible %}<span class="badge-success">Disponible</span>{% else %}<span class="badge-danger">Ocupada</span>{% endif %}
+    </div>
+    <div style="display:flex;gap:0.4rem;justify-content:center;">
+      <a href="/personal/mesas/{{ m.pk }}/toggle/" class="btn-outline-custom btn-sm-custom"><i class="bi bi-arrow-repeat"></i></a>
+      <a href="/personal/mesas/{{ m.pk }}/editar/" class="btn-outline-custom btn-sm-custom"><i class="bi bi-pencil"></i></a>
+    </div>
+  </div>
+  {% empty %}
+  <div class="card-dark p-3 text-center" style="grid-column:1/-1;">
+    <p class="text-muted">No hay mesas registradas.</p>
+    <a href="/personal/mesas/nueva/" class="btn-accent">Crear primera mesa</a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

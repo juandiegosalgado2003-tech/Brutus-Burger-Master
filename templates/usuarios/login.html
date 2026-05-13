@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso Personal — BurgerSystem</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      --bg: #0a0a0b; --bg-2: #111113; --bg-3: #18181b; --bg-4: #1e1e23;
+      --border: rgba(255,255,255,0.07); --border-2: rgba(255,255,255,0.12);
+      --accent: #f97316; --accent-glow: rgba(249,115,22,0.25);
+      --text: #f4f4f5; --text-2: #a1a1aa; --text-3: #71717a;
+      --danger: #ef4444; --warning: #f59e0b; --success: #22c55e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Inter', sans-serif; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background-image: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(249,115,22,0.08) 0%, transparent 60%);
+      padding: 1rem;
+    }
+    .card {
+      width: 100%; max-width: 400px;
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 18px; overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+    }
+    .card-header {
+      padding: 2.5rem 2rem 2rem; text-align: center;
+      background: linear-gradient(135deg, var(--bg-3), var(--bg-2));
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 900; }
+    .logo span { color: var(--accent); }
+    .subtitle { font-size: 0.82rem; color: var(--text-3); margin-top: 0.25rem; }
+    .card-body { padding: 2rem; }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+    .input-wrap { position: relative; }
+    .input-icon { position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
+    .form-control {
+      width: 100%; padding: 0.65rem 0.9rem 0.65rem 2.5rem;
+      background: var(--bg-3); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 0.9rem;
+      font-family: 'Inter', sans-serif; outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .form-control:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .form-control::placeholder { color: var(--text-3); }
+    .eye-btn { position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-3); cursor: pointer; font-size: 1rem; }
+    .btn {
+      width: 100%; padding: 0.75rem; border-radius: 8px;
+      font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700;
+      cursor: pointer; border: none; margin-top: 0.5rem;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      background: var(--accent); color: white;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:hover { background: #fb923c; }
+    .btn:active { transform: scale(0.98); }
+    .alert {
+      padding: 0.75rem 1rem; border-radius: 8px;
+      font-size: 0.85rem; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      animation: slideDown 0.2s ease;
+    }
+    @keyframes slideDown { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+    .alert-error { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: var(--danger); }
+    .alert-warning { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25); color: var(--warning); }
+
+    /* Barra de intentos */
+    .intentos-wrap { margin-top: 0.75rem; padding: 0.75rem; background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.15); border-radius: 8px; }
+    .intentos-label { font-size: 0.75rem; color: var(--danger); margin-bottom: 0.4rem; font-weight: 600; }
+    .dots { display: flex; gap: 5px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--bg-4); transition: background 0.3s; }
+    .dot.used { background: var(--danger); box-shadow: 0 0 6px rgba(239,68,68,0.5); }
+    .back-link { text-align: center; margin-top: 1.25rem; }
+    .back-link a { font-size: 0.82rem; color: var(--text-3); text-decoration: none; }
+    .back-link a:hover { color: var(--text-2); }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="card-header">
+    <div style="font-size:2.5rem;margin-bottom:0.5rem;">🍔</div>
+    <div class="logo">Burger<span>System</span></div>
+    <div class="subtitle">Panel de personal — Acceso restringido</div>
+  </div>
+  <div class="card-body">
+
+    {% if messages %}
+      {% for msg in messages %}
+      <div class="alert alert-error">
+        <i class="bi bi-shield-exclamation"></i>
+        <span>{{ msg }}</span>
+      </div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST" id="loginForm">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label">Usuario</label>
+        <div class="input-wrap">
+          <i class="bi bi-person input-icon"></i>
+          <input type="text" name="username" class="form-control" placeholder="Tu nombre de usuario" required autocomplete="username" id="usernameInput">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Contraseña</label>
+        <div class="input-wrap">
+          <i class="bi bi-lock input-icon"></i>
+          <input type="password" name="password" class="form-control" placeholder="••••••••" required id="passwordInput" style="padding-right:3rem;">
+          <button type="button" class="eye-btn" onclick="togglePass()">
+            <i class="bi bi-eye" id="eyeIcon"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de intentos: se muestra cuando hay error -->
+      {% if intentos_usados %}
+      <div class="intentos-wrap">
+        <div class="intentos-label">⚠️ Intentos fallidos: {{ intentos_usados }} de 5</div>
+        <div class="dots">
+          {% for i in "12345" %}
+          <div class="dot {% if forloop.counter <= intentos_usados %}used{% endif %}"></div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <button type="submit" class="btn">
+        <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+      </button>
+    </form>
+
+    <div class="back-link">
+      <a href="/"><i class="bi bi-arrow-left"></i> Volver al sitio público</a>
+    </div>
+  </div>
+</div>
+<script>
+function togglePass() {
+  const inp = document.getElementById('passwordInput');
+  const icon = document.getElementById('eyeIcon');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  icon.className = inp.type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
+}
+</script>
+</body>
+</html>

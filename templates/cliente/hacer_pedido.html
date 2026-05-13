@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hacer Pedido — BurgerSystem</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root{--bg:#0a0a0b;--bg2:#111113;--bg3:#18181b;--bg4:#222226;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--accent:#f97316;--accent2:#fb923c;--glow:rgba(249,115,22,0.2);--text:#f4f4f5;--text2:#a1a1aa;--text3:#52525b;--success:#22c55e;--danger:#ef4444;--r:12px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+    nav{height:58px;background:rgba(10,10,11,0.95);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;position:sticky;top:0;z-index:50}
+    .brand{font-family:'Outfit',sans-serif;font-weight:900;font-size:1.2rem;color:var(--text);text-decoration:none}.brand span{color:var(--accent)}
+    .back{color:var(--text2);text-decoration:none;font-size:.85rem;display:flex;align-items:center;gap:.4rem;padding:.35rem .75rem;border-radius:8px;transition:all .15s}.back:hover{color:var(--text);background:var(--bg3)}
+    .page{max-width:680px;margin:0 auto;padding:2rem 1.5rem}
+    h2{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:.25rem}
+    .subtitle{color:var(--text2);font-size:.88rem;margin-bottom:2rem}
+    .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-bottom:1.25rem}
+    .card-title{font-family:'Outfit',sans-serif;font-weight:700;font-size:1rem;color:var(--accent);margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem}
+    .form-group{margin-bottom:1rem}
+    .form-label{display:block;font-size:.75rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem}
+    .form-control{width:100%;padding:.65rem .9rem;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:.9rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .15s,box-shadow .15s}
+    .form-control:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
+    .form-control::placeholder{color:var(--text3)}
+    textarea.form-control{resize:vertical;min-height:70px}
+
+    /* Método de pago */
+    .pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem}
+    .pay-option{position:relative}
+    .pay-option input{position:absolute;opacity:0;pointer-events:none}
+    .pay-label{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;padding:1rem;background:var(--bg3);border:2px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .2s;text-align:center}
+    .pay-label:hover{border-color:var(--border2)}
+    .pay-option input:checked + .pay-label{border-color:var(--accent);background:rgba(249,115,22,0.08)}
+    .pay-icon{font-size:1.75rem}
+    .pay-name{font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem}
+    .pay-sub{font-size:.72rem;color:var(--text3)}
+
+    /* Resumen */
+    .resumen-item{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+    .resumen-item:last-of-type{border-bottom:none}
+    .ri-name{font-weight:500}
+    .ri-sub{font-size:.75rem;color:var(--text3);margin-top:.1rem}
+    .ri-price{font-family:'Outfit',sans-serif;font-weight:700;color:var(--accent);white-space:nowrap}
+    .total-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 0 0;margin-top:.75rem;border-top:1px solid var(--border2)}
+    .total-val{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:900;color:var(--accent)}
+
+    /* Botón */
+    .submit-btn{width:100%;background:var(--accent);color:white;border:none;border-radius:10px;padding:.85rem;font-family:'Outfit',sans-serif;font-weight:800;font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .15s;margin-top:.5rem}
+    .submit-btn:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 6px 20px var(--glow)}
+    .submit-btn:active{transform:scale(.98)}
+    .empty-warn{text-align:center;padding:3rem 1rem;color:var(--text3)}
+    .empty-warn i{font-size:2.5rem;display:block;margin-bottom:1rem;opacity:.4}
+    .go-back{display:inline-flex;align-items:center;gap:.4rem;color:var(--accent);text-decoration:none;font-weight:600;margin-top:1rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="brand">🍔 Burger<span>System</span></a>
+  <a href="/" class="back"><i class="bi bi-arrow-left"></i> Volver al menú</a>
+</nav>
+
+<div class="page">
+  <h2><i class="bi bi-bag-check" style="color:var(--accent)"></i> Completa tu pedido</h2>
+  <div class="subtitle">Revisa tu selección y llena tus datos para confirmar</div>
+
+  <!-- Resumen del carrito -->
+  <div class="card">
+    <div class="card-title"><i class="bi bi-cart3"></i> Tu selección</div>
+    <div id="resumenItems"><p style="color:var(--text3);text-align:center">Cargando...</p></div>
+    <div class="total-row">
+      <span style="font-weight:600">Total a pagar</span>
+      <span class="total-val" id="resumenTotal">$0</span>
+    </div>
+  </div>
+
+  <!-- Formulario -->
+  <form method="POST" id="pedidoForm">
+    {% csrf_token %}
+    <input type="hidden" name="items_json" id="itemsJson">
+
+    <div class="card">
+      <div class="card-title"><i class="bi bi-person-circle"></i> Tus datos</div>
+      <div class="form-group">
+        <label class="form-label">Nombre completo *</label>
+        <input type="text" name="cliente_nombre" class="form-control" placeholder="¿Cómo te llamamos?" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Teléfono (opcional)</label>
+        <input type="tel" name="cliente_telefono" class="form-control" placeholder="300 000 0000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mesa (opcional)</label>
+        <select name="mesa" class="form-control">
+          <option value="">— Sin mesa / Para llevar —</option>
+          {% for m in form.mesa.field.queryset %}
+          <option value="{{ m.pk }}">Mesa {{ m.numero }} ({{ m.capacidad }} personas)</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notas especiales</label>
+        <textarea name="notas" class="form-control" placeholder="Sin cebolla, extra salsa, alérgenos..."></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="bi bi-credit-card"></i> Método de pago</div>
+      <div class="pay-grid">
+        <label class="pay-option">
+          <input type="radio" name="metodo_pago" value="efectivo" checked onchange="toggleCard(false)">
+          <div class="pay-label">
+            <span class="pay-icon">💵</span>
+            <span class="pay-name">Efectivo</span>
+            <span class="pay-sub">Pago al recibir</span>
+          </div>
+        </label>
+        <label class="pay-option">
+          <input type="radio" name="metodo_pago" value="tarjeta" onchange="toggleCard(true)">
+          <div class="pay-label">
+            <span class="pay-icon">💳</span>
+            <span class="pay-name">Tarjeta</span>
+            <span class="pay-sub">Débito / Crédito</span>
+          </div>
+        </label>
+      </div>
+      <div id="cardFields" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Últimos 4 dígitos</label>
+          <input type="text" name="tarjeta_numero" class="form-control" placeholder="1234" maxlength="4" pattern="[0-9]{4}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo de tarjeta</label>
+          <select name="tarjeta_tipo" class="form-control">
+            <option value="">Seleccionar...</option>
+            <option>Visa</option><option>Mastercard</option><option>American Express</option><option>Otro</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div id="emptyWarn" class="empty-warn" style="display:none">
+      <i class="bi bi-bag-x"></i>
+      <p>No tienes productos en tu pedido.</p>
+      <a href="/" class="go-back"><i class="bi bi-arrow-left"></i> Volver al menú</a>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">
+      <i class="bi bi-check-circle-fill"></i> Confirmar pedido
+    </button>
+  </form>
+</div>
+
+<script>
+const cart = JSON.parse(localStorage.getItem('bs_cart') || '[]');
+
+function renderResumen() {
+  const el = document.getElementById('resumenItems');
+  const total = cart.reduce((s,i) => s+i.qty*i.precio, 0);
+  if (!cart.length) {
+    el.innerHTML = '<p style="color:var(--text3);text-align:center">Sin productos</p>';
+    document.getElementById('emptyWarn').style.display = 'block';
+    document.getElementById('submitBtn').style.display = 'none';
+    return;
+  }
+  el.innerHTML = cart.map(i => `
+    <div class="resumen-item">
+      <div><div class="ri-name">${i.qty}× ${i.nombre}</div></div>
+      <div class="ri-price">$${(i.qty*i.precio).toLocaleString('es-CO')}</div>
+    </div>
+  `).join('');
+  document.getElementById('resumenTotal').textContent = '$'+total.toLocaleString('es-CO');
+}
+
+document.getElementById('pedidoForm').addEventListener('submit', e => {
+  if (!cart.length) { e.preventDefault(); return; }
+  document.getElementById('itemsJson').value = JSON.stringify(cart.map(i => ({id:i.id,cantidad:i.qty})));
+  localStorage.removeItem('bs_cart');
+});
+
+function toggleCard(show) {
+  document.getElementById('cardFields').style.display = show ? 'block' : 'none';
+}
+
+renderResumen();
+</script>
+</body>
+</html>

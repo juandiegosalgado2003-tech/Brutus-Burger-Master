@@ -1,0 +1,58 @@
+{% extends 'base_personal.html' %}
+{% block title %}Pedido #{{ pedido.pk }}{% endblock %}
+{% block content %}
+<div class="flex-between mb-3">
+  <h2 style="color:var(--gold);">Pedido #{{ pedido.pk }}</h2>
+  <a href="/personal/pedidos/" class="btn-outline-custom"><i class="bi bi-arrow-left"></i> Volver</a>
+</div>
+
+<div style="display:grid; grid-template-columns:1fr 320px; gap:1.5rem;">
+  <div>
+    <div class="card-dark p-3 mb-2">
+      <h4 style="color:var(--accent); margin-bottom:1rem;">👤 Datos del cliente</h4>
+      <div class="flex-between mb-1"><span class="text-muted">Nombre:</span><strong>{{ pedido.cliente_nombre }}</strong></div>
+      {% if pedido.cliente_telefono %}<div class="flex-between mb-1"><span class="text-muted">Teléfono:</span><strong>{{ pedido.cliente_telefono }}</strong></div>{% endif %}
+      <div class="flex-between mb-1"><span class="text-muted">Mesa:</span><strong>{% if pedido.mesa %}Mesa {{ pedido.mesa.numero }}{% else %}Para llevar{% endif %}</strong></div>
+      <div class="flex-between mb-1">
+        <span class="text-muted">Pago:</span>
+        <strong>{% if pedido.metodo_pago == 'efectivo' %}💵 Efectivo{% else %}💳 Tarjeta {% if pedido.tarjeta_numero %}****{{ pedido.tarjeta_numero }} ({{ pedido.tarjeta_tipo }}){% endif %}{% endif %}</strong>
+      </div>
+      {% if pedido.notas %}<div class="mt-2"><span class="text-muted">Notas:</span><p style="margin:0.3rem 0 0; color:var(--warning);">{{ pedido.notas }}</p></div>{% endif %}
+    </div>
+
+    <div class="card-dark" style="overflow:hidden;">
+      <div style="padding:1rem 1.5rem; border-bottom:1px solid var(--border);"><h4 style="margin:0;">🛒 Productos</h4></div>
+      <table class="table-dark-custom">
+        <thead><tr><th>Producto</th><th>Cant.</th><th>Precio</th><th>Subtotal</th></tr></thead>
+        <tbody>
+          {% for item in pedido.items.all %}
+          <tr>
+            <td>{{ item.producto.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>${{ item.precio_unitario|floatformat:0 }}</td>
+            <td style="color:var(--accent);font-weight:700;">${{ item.subtotal|floatformat:0 }}</td>
+          </tr>
+          {% endfor %}
+          <tr style="background:var(--bg-card2);">
+            <td colspan="3" style="font-weight:700;">TOTAL</td>
+            <td style="color:var(--accent);font-size:1.1rem;font-weight:800;">${{ pedido.total|floatformat:0 }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card-dark p-3" style="align-self:start;">
+    <h4 style="color:var(--accent); margin-bottom:1rem;">🔄 Estado del pedido</h4>
+    <form method="POST">
+      {% csrf_token %}
+      <select name="estado" class="form-control-dark form-select-dark mb-2">
+        {% for valor, etiqueta in pedido.ESTADOS %}
+        <option value="{{ valor }}" {% if pedido.estado == valor %}selected{% endif %}>{{ etiqueta }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn-accent w-100" style="justify-content:center;">Actualizar estado</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base_personal.html' %}
+{% block title %}Pedidos{% endblock %}
+{% block content %}
+<div class="flex-between mb-3">
+  <h2 style="color:var(--gold);">📋 Todos los pedidos</h2>
+</div>
+
+<div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.5rem;">
+  <a href="/personal/pedidos/" class="btn-outline-custom btn-sm-custom {% if not estado_filtro %}btn-accent{% endif %}">Todos</a>
+  {% for valor, etiqueta in estados %}
+  <a href="?estado={{ valor }}" class="btn-outline-custom btn-sm-custom">{{ etiqueta }}</a>
+  {% endfor %}
+</div>
+
+<div class="card-dark" style="overflow:hidden;">
+  <table class="table-dark-custom">
+    <thead>
+      <tr><th>#</th><th>Cliente</th><th>Pago</th><th>Estado</th><th>Total</th><th>Fecha</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for p in pedidos %}
+      <tr>
+        <td><strong>#{{ p.pk }}</strong></td>
+        <td>{{ p.cliente_nombre }}</td>
+        <td>
+          {% if p.metodo_pago == 'efectivo' %}💵 Efectivo
+          {% else %}💳 Tarjeta {% if p.tarjeta_numero %}(****{{ p.tarjeta_numero }}){% endif %}{% endif %}
+        </td>
+        <td>
+          {% if p.estado == 'pendiente' %}<span class="badge-warning">Pendiente</span>
+          {% elif p.estado == 'en_preparacion' %}<span class="badge-info">En preparación</span>
+          {% elif p.estado == 'listo' %}<span class="badge-success">Listo</span>
+          {% elif p.estado == 'entregado' %}<span class="badge-accent">Entregado</span>
+          {% else %}<span class="badge-danger">Cancelado</span>{% endif %}
+        </td>
+        <td style="color:var(--accent); font-weight:700;">${{ p.total|floatformat:0 }}</td>
+        <td class="text-muted" style="font-size:0.82rem;">{{ p.fecha_creacion|date:"d/m H:i" }}</td>
+        <td><a href="/personal/pedidos/{{ p.pk }}/" class="btn-outline-custom btn-sm-custom">Ver</a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:2rem;">No hay pedidos.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base_personal.html' %}
+{% block title %}Panel — BurgerSystem{% endblock %}
+{% block content %}
+<div class="flex-between mb-3">
+  <h2 style="color:var(--gold);">⚡ Panel de pedidos</h2>
+  <a href="/hacer-pedido/" class="btn-accent" target="_blank"><i class="bi bi-plus"></i> Nuevo pedido</a>
+</div>
+
+<div class="grid-3 mb-3">
+  {% for estado, etiqueta in estados %}
+  {% with count=pedidos|length %}
+  {% endwith %}
+  {% endfor %}
+</div>
+
+<div class="card-dark" style="overflow:hidden;">
+  <div style="padding:1rem 1.5rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+    <h4 style="margin:0;">Pedidos activos</h4>
+    <a href="/personal/pedidos/" class="btn-outline-custom btn-sm-custom">Ver todos</a>
+  </div>
+  <table class="table-dark-custom">
+    <thead>
+      <tr>
+        <th>#</th><th>Cliente</th><th>Mesa</th><th>Estado</th><th>Total</th><th>Hora</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in pedidos %}
+      <tr>
+        <td><strong>#{{ p.pk }}</strong></td>
+        <td>{{ p.cliente_nombre }}</td>
+        <td>{% if p.mesa %}Mesa {{ p.mesa.numero }}{% else %}<span class="text-muted">Para llevar</span>{% endif %}</td>
+        <td>
+          {% if p.estado == 'pendiente' %}<span class="badge-warning">Pendiente</span>
+          {% elif p.estado == 'en_preparacion' %}<span class="badge-info">En preparación</span>
+          {% elif p.estado == 'listo' %}<span class="badge-success">Listo</span>
+          {% else %}<span class="badge-accent">{{ p.get_estado_display }}</span>{% endif %}
+        </td>
+        <td style="color:var(--accent); font-weight:700;">${{ p.total|floatformat:0 }}</td>
+        <td class="text-muted" style="font-size:0.82rem;">{{ p.fecha_creacion|date:"H:i" }}</td>
+        <td><a href="/personal/pedidos/{{ p.pk }}/" class="btn-outline-custom btn-sm-custom">Ver</a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:2rem;">No hay pedidos activos 🎉</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

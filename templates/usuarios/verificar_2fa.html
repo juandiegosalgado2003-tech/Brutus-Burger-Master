@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificación 2FA — BurgerSystem</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root{--bg:#0a0a0b;--bg2:#111113;--bg3:#18181b;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--accent:#f97316;--glow:rgba(249,115,22,0.2);--text:#f4f4f5;--text2:#a1a1aa;--text3:#52525b;--danger:#ef4444;--warning:#f59e0b}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;background-image:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(249,115,22,0.06) 0%,transparent 60%)}
+    .card{width:100%;max-width:400px;background:var(--bg2);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.6)}
+    .card-head{padding:2rem 2rem 1.5rem;text-align:center;background:linear-gradient(135deg,var(--bg3),var(--bg2));border-bottom:1px solid var(--border)}
+    .icon-wrap{width:64px;height:64px;background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.2);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.75rem}
+    .card-title{font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800}
+    .card-sub{color:var(--text2);font-size:.82rem;margin-top:.3rem}
+    .card-body{padding:1.75rem}
+    .email-hint{background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.2);border-radius:8px;padding:.75rem 1rem;font-size:.85rem;color:#93c5fd;margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem}
+    .otp-wrap{display:flex;gap:.5rem;justify-content:center;margin:1.25rem 0}
+    .otp-digit{width:46px;height:54px;background:var(--bg3);border:2px solid var(--border);border-radius:8px;color:var(--text);font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;text-align:center;outline:none;transition:all .15s}
+    .otp-digit:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
+    .otp-digit.filled{border-color:rgba(249,115,22,.5);background:rgba(249,115,22,.06)}
+    .timer-wrap{text-align:center;margin-bottom:1.25rem;font-size:.82rem;color:var(--text3)}
+    #timerVal{font-weight:700;color:var(--warning)}
+    #timerVal.urgent{color:var(--danger)}
+    .submit-btn{width:100%;background:var(--accent);color:white;border:none;border-radius:8px;padding:.8rem;font-family:'Outfit',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .15s}
+    .submit-btn:hover{background:#fb923c;transform:translateY(-1px)}
+    .submit-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+    .alert{padding:.75rem 1rem;border-radius:8px;font-size:.85rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;animation:slide .2s ease}
+    @keyframes slide{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+    .alert-error{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);color:var(--danger)}
+    .back-link{text-align:center;margin-top:1.25rem;font-size:.82rem}
+    .back-link a{color:var(--text2);text-decoration:none}.back-link a:hover{color:var(--text)}
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="card-head">
+    <div class="icon-wrap">🔐</div>
+    <div class="card-title">Verificación en dos pasos</div>
+    <div class="card-sub">Revisa tu correo e ingresa el código</div>
+  </div>
+  <div class="card-body">
+
+    {% if messages %}
+      {% for msg in messages %}
+      <div class="alert alert-error"><i class="bi bi-exclamation-circle"></i> {{ msg }}</div>
+      {% endfor %}
+    {% endif %}
+
+    {% if email_hint %}
+    <div class="email-hint">
+      <i class="bi bi-envelope-check"></i>
+      Código enviado a <strong style="margin-left:.25rem">{{ email_hint }}</strong>
+    </div>
+    {% endif %}
+
+    <form method="POST" id="otpForm">
+      {% csrf_token %}
+      <input type="hidden" name="codigo" id="codigoHidden">
+      <div class="otp-wrap">
+        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" id="d0" autofocus>
+        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" id="d1">
+        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" id="d2">
+        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" id="d3">
+        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" id="d4">
+        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" id="d5">
+      </div>
+
+      <div class="timer-wrap">Expira en <span id="timerVal">5:00</span></div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <i class="bi bi-shield-check"></i> Verificar código
+      </button>
+    </form>
+
+    <div class="back-link">
+      <a href="/usuarios/login/"><i class="bi bi-arrow-left"></i> Volver al login</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const digits = Array.from(document.querySelectorAll('.otp-digit'));
+function sync() {
+  const code = digits.map(d=>d.value).join('');
+  document.getElementById('codigoHidden').value = code;
+  if (code.length === 6) setTimeout(() => document.getElementById('otpForm').submit(), 200);
+}
+digits.forEach((d,i) => {
+  d.addEventListener('input', e => {
+    d.value = e.target.value.replace(/\D/g,'').slice(-1);
+    d.classList.toggle('filled', !!d.value);
+    if (d.value && i < digits.length-1) digits[i+1].focus();
+    sync();
+  });
+  d.addEventListener('keydown', e => { if(e.key==='Backspace'&&!d.value&&i>0) digits[i-1].focus(); });
+  d.addEventListener('paste', e => {
+    e.preventDefault();
+    const p = e.clipboardData.getData('text').replace(/\D/g,'').slice(0,6);
+    p.split('').forEach((c,j) => { if(digits[j]){digits[j].value=c;digits[j].classList.add('filled');} });
+    digits[Math.min(p.length,digits.length-1)].focus();
+    sync();
+  });
+});
+let secs=300;
+const tv=document.getElementById('timerVal'),btn=document.getElementById('submitBtn');
+const t=setInterval(()=>{
+  secs--;
+  const m=Math.floor(secs/60),s=secs%60;
+  tv.textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  if(secs<=60)tv.classList.add('urgent');
+  if(secs<=0){clearInterval(t);tv.textContent='Expirado';btn.disabled=true;}
+},1000);
+</script>
+</body>
+</html>
