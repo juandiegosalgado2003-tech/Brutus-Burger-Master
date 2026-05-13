@@ -35,12 +35,23 @@
     .pay-name{font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem}
     .pay-sub{font-size:.72rem;color:var(--text3)}
 
-    /* Resumen */
-    .resumen-item{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.88rem}
+    /* Resumen CRUD */
+    .resumen-item{display:flex;flex-direction:column;padding:.85rem 0;border-bottom:1px solid var(--border);font-size:.88rem;gap:.5rem}
     .resumen-item:last-of-type{border-bottom:none}
-    .ri-name{font-weight:500}
-    .ri-sub{font-size:.75rem;color:var(--text3);margin-top:.1rem}
+    .ri-top{display:flex;justify-content:space-between;align-items:center}
+    .ri-name{font-weight:700;color:var(--text);font-size:.95rem}
     .ri-price{font-family:'Outfit',sans-serif;font-weight:700;color:var(--accent);white-space:nowrap}
+    .ri-controls{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:.25rem}
+    .qty-ctrl{display:flex;align-items:center;gap:.55rem}
+    .qty-btn{background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:6px;width:26px;height:26px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .15s}
+    .qty-btn:hover{background:var(--bg4)}
+    .qty-plus{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:white}
+    .qty-num{font-family:'Outfit',sans-serif;font-weight:800;font-size:1rem;min-width:20px;text-align:center}
+    .del-btn{background:transparent;border:none;color:var(--danger);cursor:pointer;font-size:1rem;padding:.2rem;opacity:.7;transition:opacity .15s}
+    .del-btn:hover{opacity:1}
+    .item-comment{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:.4rem .6rem;color:var(--text);font-size:.8rem;font-family:'Inter',sans-serif;outline:none}
+    .item-comment::placeholder{color:var(--text3)}
+
     .total-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 0 0;margin-top:.75rem;border-top:1px solid var(--border2)}
     .total-val{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:900;color:var(--accent)}
 
@@ -98,8 +109,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">Notas especiales</label>
-        <textarea name="notas" class="form-control" placeholder="Sin cebolla, extra salsa, alérgenos..."></textarea>
+        <label class="form-label">Notas especiales generales</label>
+        <textarea name="notas" id="notasGenerales" class="form-control" placeholder="Alergias, cambio para efectivo, etc."></textarea>
       </div>
     </div>
 
@@ -151,21 +162,66 @@
 </div>
 
 <script>
-const cart = JSON.parse(localStorage.getItem('bs_cart') || '[]');
+let cart = JSON.parse(localStorage.getItem('bs_cart') || '[]');
+
+function saveCart() {
+  localStorage.setItem('bs_cart', JSON.stringify(cart));
+  renderResumen();
+}
+
+function chgQty(id, delta) {
+  const idx = cart.findIndex(i => i.id === id);
+  if(idx < 0) return;
+  cart[idx].qty += delta;
+  if(cart[idx].qty <= 0) cart.splice(idx, 1);
+  saveCart();
+}
+
+function removeItem(id) {
+  const idx = cart.findIndex(i => i.id === id);
+  if(idx < 0) return;
+  cart.splice(idx, 1);
+  saveCart();
+}
+
+function updateComment(id, val) {
+  const idx = cart.findIndex(i => i.id === id);
+  if(idx >= 0) {
+    cart[idx].comentarios = val;
+    localStorage.setItem('bs_cart', JSON.stringify(cart));
+  }
+}
 
 function renderResumen() {
   const el = document.getElementById('resumenItems');
   const total = cart.reduce((s,i) => s+i.qty*i.precio, 0);
+  
   if (!cart.length) {
-    el.innerHTML = '<p style="color:var(--text3);text-align:center">Sin productos</p>';
+    el.innerHTML = '';
     document.getElementById('emptyWarn').style.display = 'block';
     document.getElementById('submitBtn').style.display = 'none';
+    document.getElementById('resumenTotal').textContent = '$0';
     return;
+  } else {
+    document.getElementById('emptyWarn').style.display = 'none';
+    document.getElementById('submitBtn').style.display = 'flex';
   }
+  
   el.innerHTML = cart.map(i => `
     <div class="resumen-item">
-      <div><div class="ri-name">${i.qty}× ${i.nombre}</div></div>
-      <div class="ri-price">$${(i.qty*i.precio).toLocaleString('es-CO')}</div>
+      <div class="ri-top">
+        <span class="ri-name">${i.nombre}</span>
+        <span class="ri-price">$${(i.qty*i.precio).toLocaleString('es-CO')}</span>
+      </div>
+      <div class="ri-controls">
+        <div class="qty-ctrl">
+          <button type="button" class="qty-btn" onclick="chgQty(${i.id}, -1)">−</button>
+          <span class="qty-num">${i.qty}</span>
+          <button type="button" class="qty-btn qty-plus" onclick="chgQty(${i.id}, 1)">+</button>
+        </div>
+        <button type="button" class="del-btn" onclick="removeItem(${i.id})"><i class="bi bi-trash3-fill"></i></button>
+      </div>
+      <input type="text" class="item-comment" placeholder="Comentarios para este producto (ej: sin cebolla)" value="${i.comentarios || ''}" onchange="updateComment(${i.id}, this.value)">
     </div>
   `).join('');
   document.getElementById('resumenTotal').textContent = '$'+total.toLocaleString('es-CO');
@@ -173,6 +229,15 @@ function renderResumen() {
 
 document.getElementById('pedidoForm').addEventListener('submit', e => {
   if (!cart.length) { e.preventDefault(); return; }
+  
+  // Agregar comentarios de items al textarea de notas generales para que el personal lo vea
+  const notasGen = document.getElementById('notasGenerales');
+  let itemNotes = cart.filter(i => i.comentarios && i.comentarios.trim() !== '').map(i => `[${i.qty}x ${i.nombre}]: ${i.comentarios}`).join('\\n');
+  
+  if(itemNotes !== '') {
+    notasGen.value = itemNotes + (notasGen.value ? '\\n\\nNotas Generales:\\n' + notasGen.value : '');
+  }
+
   document.getElementById('itemsJson').value = JSON.stringify(cart.map(i => ({id:i.id,cantidad:i.qty})));
   localStorage.removeItem('bs_cart');
 });
