@@ -32,6 +32,27 @@ INSTALLED_APPS = [
 ]
 
 # ================== MIDDLEWARE ==================
+ROOT_URLCONF = 'burger_project.urls'
+WSGI_APPLICATION = 'burger_project.wsgi.application'
+
+# ================== TEMPLATES ==================
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+# ================== MIDDLEWARE ==================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',   # ← Muy importante
@@ -54,11 +75,14 @@ DATABASES = {
 
 # ================== STATIC & MEDIA FILES ==================
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ================== OTRAS CONFIGURACIONES ==================
 LANGUAGE_CODE = 'es-co'
