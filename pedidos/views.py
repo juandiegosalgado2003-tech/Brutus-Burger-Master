@@ -55,7 +55,7 @@ def hacer_pedido(request):
         })
     except Exception as e:
         logger.error(f"Error en hacer_pedido: {traceback.format_exc()}")
-        return HttpResponse(f"<h2>Error en hacer_pedido</h2><pre>{traceback.format_exc()}</pre>", status=500)
+        return HttpResponse("<h2>Error del servidor</h2><p>Ocurrió un error al procesar tu pedido. Intenta de nuevo.</p>", status=500)
 
 def pedido_confirmado(request, pk):
     try:
@@ -63,7 +63,7 @@ def pedido_confirmado(request, pk):
         return render(request, 'cliente/pedido_confirmado.html', {'pedido': pedido})
     except Exception as e:
         logger.error(f"Error en pedido_confirmado: {traceback.format_exc()}")
-        return HttpResponse(f"<h2>Error en pedido_confirmado</h2><pre>{traceback.format_exc()}</pre>", status=500)
+        return HttpResponse("<h2>Error del servidor</h2><p>Ocurrió un error al cargar la confirmación.</p>", status=500)
 
 # ── VISTAS PERSONAL ──────────────────────────────────────────────
 @login_required
