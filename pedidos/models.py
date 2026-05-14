@@ -25,6 +25,7 @@ class Pedido(models.Model):
 
     mesa = models.ForeignKey(Mesa, on_delete=models.SET_NULL, null=True, blank=True)
     notas = models.TextField(blank=True, help_text='Instrucciones especiales')
+    razon_cancelacion = models.TextField(blank=True, help_text='Razón de la cancelación')
     estado = models.CharField(max_length=20, choices=ESTADOS, default='pendiente')
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     fecha_creacion = models.DateTimeField(auto_now_add=True)

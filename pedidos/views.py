@@ -11,6 +11,7 @@ from .models import Pedido, DetallePedido
 from .forms import PedidoClienteForm, EstadoForm
 from menu.models import Producto
 from mesas.models import Mesa
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
@@ -70,7 +71,13 @@ def pedido_confirmado(request, pk):
 @never_cache
 def panel_personal(request):
     pedidos = Pedido.objects.exclude(estado='entregado').exclude(estado='cancelado')
-    return render(request, 'pedidos/panel.html', {'pedidos': pedidos, 'estados': Pedido.ESTADOS})
+    hoy = timezone.now().date()
+    pedidos_hoy_completados = Pedido.objects.filter(estado__in=['entregado', 'cancelado'], fecha_creacion__date=hoy)
+    return render(request, 'pedidos/panel.html', {
+        'pedidos': pedidos, 
+        'pedidos_hoy_completados': pedidos_hoy_completados,
+        'estados': Pedido.ESTADOS
+    })
 
 @login_required
 @never_cache
@@ -91,7 +98,12 @@ def detalle_pedido(request, pk):
     pedido = get_object_or_404(Pedido, pk=pk)
     form_estado = EstadoForm(request.POST or None, instance=pedido)
     if request.method == 'POST' and form_estado.is_valid():
-        form_estado.save()
+        pedido = form_estado.save(commit=False)
+        if pedido.estado == 'cancelado':
+            razon = request.POST.get('razon_cancelacion')
+            if razon:
+                pedido.razon_cancelacion = razon
+        pedido.save()
         messages.success(request, 'Estado actualizado.')
         return redirect('panel_personal')
     productos = Producto.objects.filter(disponible=True).order_by('categoria__nombre', 'nombre')

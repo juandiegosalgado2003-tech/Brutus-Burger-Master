@@ -18,6 +18,12 @@
         <strong>{% if pedido.metodo_pago == 'efectivo' %}💵 Efectivo{% else %}💳 Tarjeta {% if pedido.tarjeta_numero %}****{{ pedido.tarjeta_numero }} ({{ pedido.tarjeta_tipo }}){% endif %}{% endif %}</strong>
       </div>
       {% if pedido.notas %}<div class="mt-2"><span class="text-muted">Notas:</span><p style="margin:0.3rem 0 0; color:var(--warning);">{{ pedido.notas }}</p></div>{% endif %}
+      {% if pedido.estado == 'cancelado' and pedido.razon_cancelacion %}
+      <div class="mt-2 p-2" style="background:rgba(239,68,68,0.1); border-left:3px solid #ef4444; border-radius:4px;">
+        <span style="color:#ef4444;font-weight:bold;"><i class="bi bi-x-circle"></i> Motivo de Cancelación:</span>
+        <p style="margin:0.3rem 0 0; color:var(--text-1);">{{ pedido.razon_cancelacion }}</p>
+      </div>
+      {% endif %}
     </div>
 
     <div class="card-dark" style="overflow:hidden;">
@@ -59,7 +65,7 @@
 
   <div class="card-dark p-3" style="align-self:start;">
     <h4 style="color:var(--accent); margin-bottom:1rem;">🔄 Estado del pedido</h4>
-    <form method="POST">
+    <form id="form-estado" method="POST">
       {% csrf_token %}
       <select name="estado" class="form-control-dark form-select-dark mb-2">
         {% for valor, etiqueta in pedido.ESTADOS %}
@@ -70,4 +76,44 @@
     </form>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  document.getElementById('form-estado').addEventListener('submit', function(e) {
+    const select = document.querySelector('select[name="estado"]');
+    if (select.value === 'cancelado') {
+      e.preventDefault();
+      Swal.fire({
+        title: 'Cancelar Pedido',
+        text: 'Por favor ingresa la razón de la cancelación:',
+        input: 'text',
+        inputPlaceholder: 'Escribe la razón aquí...',
+        icon: 'warning',
+        background: '#1a1a1a',
+        color: '#ffffff',
+        confirmButtonColor: '#f97316',
+        cancelButtonColor: '#444',
+        showCancelButton: true,
+        confirmButtonText: 'Confirmar Cancelación',
+        cancelButtonText: 'Volver',
+        inputValidator: (value) => {
+          if (!value) {
+            return '¡Debes ingresar una razón para cancelar!';
+          }
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = 'razon_cancelacion';
+          input.value = result.value;
+          this.appendChild(input);
+          this.submit();
+        }
+      });
+    }
+  });
+</script>
 {% endblock %}
