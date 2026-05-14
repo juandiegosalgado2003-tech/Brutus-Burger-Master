@@ -1,797 +1,1579 @@
 {% load l10n %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brutus Burger Master</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,900&family=Barlow+Condensed:wght@700;900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
-    :root{
-      --bg:#0c0900;--bg2:#120d03;--bg3:#1a1205;--bg4:#241a08;
-      --border:rgba(255,200,50,0.08);--border2:rgba(255,200,50,0.18);
-      --accent:#ff6b00;--accent2:#ff9500;--gold:#f5c842;--cream:#fff8e7;
-      --glow:rgba(255,107,0,0.3);--glow2:rgba(245,200,66,0.2);
-      --text:#fff8e7;--text2:#c9a96e;--text3:#6b5030;
-      --r:14px;
+    :root {
+      --bg: #0c0900;
+      --bg2: #120d03;
+      --bg3: #1a1205;
+      --bg4: #241a08;
+      --border: rgba(255, 200, 50, 0.08);
+      --border2: rgba(255, 200, 50, 0.18);
+      --accent: #ff6b00;
+      --accent2: #ff9500;
+      --gold: #f5c842;
+      --cream: #fff8e7;
+      --glow: rgba(255, 107, 0, 0.3);
+      --glow2: rgba(245, 200, 66, 0.2);
+      --text: #fff8e7;
+      --text2: #c9a96e;
+      --text3: #6b5030;
+      --r: 14px;
     }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px}
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg2)
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 2px
+    }
 
     /* ── NAV ── */
-    nav{
-      position:fixed;top:0;left:0;right:0;z-index:100;
-      height:64px;
-      background:linear-gradient(180deg,rgba(12,9,0,0.97) 0%,rgba(12,9,0,0.85) 100%);
-      backdrop-filter:blur(20px);
-      border-bottom:1px solid rgba(245,200,66,0.12);
-      display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 64px;
+      background: linear-gradient(180deg, rgba(12, 9, 0, 0.97) 0%, rgba(12, 9, 0, 0.85) 100%);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(245, 200, 66, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
     }
-    .brand{
-      font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.06em;
-      color:var(--cream);text-decoration:none;display:flex;align-items:center;gap:.5rem;
+
+    .brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.06em;
+      color: var(--cream);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
     }
-    .brand-icon{font-size:1.4rem}
-    .brand em{color:var(--gold);font-style:normal}
-    .nav-links{display:flex;align-items:center;gap:.4rem}
-    .nav-a{
-      color:var(--text2);text-decoration:none;padding:.4rem .9rem;
-      border-radius:8px;font-size:.85rem;font-weight:600;
-      transition:all .18s;display:flex;align-items:center;gap:.35rem;
-      text-transform:uppercase;letter-spacing:.04em;
+
+    .brand-icon {
+      font-size: 1.4rem
     }
-    .nav-a:hover{color:var(--cream);background:rgba(255,107,0,0.12)}
-    .nav-btn{
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      color:white;border:none;padding:.45rem 1.2rem;border-radius:50px;
-      font-size:.82rem;font-weight:700;text-decoration:none;
-      transition:all .2s;display:flex;align-items:center;gap:.4rem;
-      text-transform:uppercase;letter-spacing:.05em;
-      box-shadow:0 4px 16px rgba(255,107,0,0.35);
+
+    .brand em {
+      color: var(--gold);
+      font-style: normal
     }
-    .nav-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(255,107,0,0.5);color:white}
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: .4rem
+    }
+
+    .nav-a {
+      color: var(--text2);
+      text-decoration: none;
+      padding: .4rem .9rem;
+      border-radius: 8px;
+      font-size: .85rem;
+      font-weight: 600;
+      transition: all .18s;
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .nav-a:hover {
+      color: var(--cream);
+      background: rgba(255, 107, 0, 0.12)
+    }
+
+    .nav-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      border: none;
+      padding: .45rem 1.2rem;
+      border-radius: 50px;
+      font-size: .82rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      box-shadow: 0 4px 16px rgba(255, 107, 0, 0.35);
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px rgba(255, 107, 0, 0.5);
+      color: white
+    }
 
     /* ── HERO ── */
-    .hero{
-      min-height:100vh;
-      display:grid;grid-template-columns:1fr 1fr;align-items:center;
-      padding:80px 5% 4rem;gap:3rem;
-      position:relative;overflow:hidden;
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 80px 5% 4rem;
+      gap: 3rem;
+      position: relative;
+      overflow: hidden;
     }
+
     /* Fondo: gradiente y textura */
-    .hero::before{
-      content:'';position:absolute;inset:0;
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
       background:
-        radial-gradient(ellipse 60% 70% at 70% 50%, rgba(255,107,0,0.15) 0%, transparent 65%),
-        radial-gradient(ellipse 40% 50% at 20% 80%, rgba(245,200,66,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255,150,0,0.1) 0%, transparent 55%);
-      pointer-events:none;
+        radial-gradient(ellipse 60% 70% at 70% 50%, rgba(255, 107, 0, 0.15) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 20% 80%, rgba(245, 200, 66, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 40% at 50% 0%, rgba(255, 150, 0, 0.1) 0%, transparent 55%);
+      pointer-events: none;
     }
+
     /* Líneas diagonales de fondo */
-    .hero::after{
-      content:'';position:absolute;inset:0;
-      background-image:repeating-linear-gradient(
-        -55deg,
-        transparent,transparent 60px,
-        rgba(255,200,50,0.02) 60px,rgba(255,200,50,0.02) 61px
-      );
-      pointer-events:none;
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(-55deg,
+          transparent, transparent 60px,
+          rgba(255, 200, 50, 0.02) 60px, rgba(255, 200, 50, 0.02) 61px);
+      pointer-events: none;
     }
 
     /* Canvas partículas */
-    #particles{position:absolute;inset:0;pointer-events:none;z-index:0}
+    #particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0
+    }
 
-    .hero-left{position:relative;z-index:2}
-    .hero-eyebrow{
-      display:inline-flex;align-items:center;gap:.6rem;
-      background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.25);
-      border-radius:50px;padding:.35rem 1rem;
-      font-size:.75rem;font-weight:700;color:var(--gold);
-      text-transform:uppercase;letter-spacing:.12em;margin-bottom:1.5rem;
+    .hero-left {
+      position: relative;
+      z-index: 2
     }
-    .hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 1.8s ease-in-out infinite}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
-    .hero-h1{
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(3.5rem,8vw,7rem);
-      line-height:.95;letter-spacing:0.02em;
-      margin-bottom:1.2rem;
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      background: rgba(245, 200, 66, 0.1);
+      border: 1px solid rgba(245, 200, 66, 0.25);
+      border-radius: 50px;
+      padding: .35rem 1rem;
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-bottom: 1.5rem;
     }
-    .hero-h1 .line1{display:block;color:var(--cream)}
-    .hero-h1 .line2{
-      display:block;
-      background:linear-gradient(135deg,var(--accent) 0%,var(--gold) 60%,var(--accent2) 100%);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-      filter:drop-shadow(0 0 30px rgba(255,107,0,0.5));
-    }
-    .hero-h1 .line3{display:block;color:var(--cream);font-size:55%}
 
-    .hero-sub{
-      color:var(--text2);font-size:1.05rem;font-weight:400;
-      line-height:1.6;margin-bottom:2.2rem;max-width:420px;
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse 1.8s ease-in-out infinite
     }
-    .hero-sub strong{color:var(--cream);font-weight:700}
 
-    .hero-actions{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
-    .btn-primary{
-      display:inline-flex;align-items:center;gap:.6rem;
-      background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);
-      color:white;padding:.85rem 2.2rem;border-radius:50px;
-      font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.1rem;
-      text-decoration:none;border:none;cursor:pointer;
-      letter-spacing:.06em;text-transform:uppercase;
-      box-shadow:0 8px 32px rgba(255,107,0,0.45);
-      transition:all .25s;position:relative;overflow:hidden;
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .4;
+        transform: scale(.7)
+      }
     }
-    .btn-primary::after{
-      content:'';position:absolute;inset:0;
-      background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.15));
-      opacity:0;transition:opacity .2s;
+
+    .hero-h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: .95;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.2rem;
     }
-    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(255,107,0,0.6);color:white}
-    .btn-primary:hover::after{opacity:1}
-    .btn-secondary{
-      display:inline-flex;align-items:center;gap:.5rem;
-      color:var(--text2);background:transparent;
-      border:1px solid var(--border2);padding:.8rem 1.6rem;border-radius:50px;
-      font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;
-      text-decoration:none;letter-spacing:.06em;text-transform:uppercase;
-      transition:all .2s;cursor:pointer;
+
+    .hero-h1 .line1 {
+      display: block;
+      color: var(--cream)
     }
-    .btn-secondary:hover{color:var(--cream);border-color:var(--gold);background:rgba(245,200,66,0.07)}
+
+    .hero-h1 .line2 {
+      display: block;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gold) 60%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 30px rgba(255, 107, 0, 0.5));
+    }
+
+    .hero-h1 .line3 {
+      display: block;
+      color: var(--cream);
+      font-size: 55%
+    }
+
+    .hero-sub {
+      color: var(--text2);
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.6;
+      margin-bottom: 2.2rem;
+      max-width: 420px;
+    }
+
+    .hero-sub strong {
+      color: var(--cream);
+      font-weight: 700
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      color: white;
+      padding: .85rem 2.2rem;
+      border-radius: 50px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      box-shadow: 0 8px 32px rgba(255, 107, 0, 0.45);
+      transition: all .25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.15));
+      opacity: 0;
+      transition: opacity .2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 40px rgba(255, 107, 0, 0.6);
+      color: white
+    }
+
+    .btn-primary:hover::after {
+      opacity: 1
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      color: var(--text2);
+      background: transparent;
+      border: 1px solid var(--border2);
+      padding: .8rem 1.6rem;
+      border-radius: 50px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: all .2s;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      color: var(--cream);
+      border-color: var(--gold);
+      background: rgba(245, 200, 66, 0.07)
+    }
 
     /* Stats strip */
-    .hero-stats{
-      display:flex;gap:2rem;margin-top:2.5rem;
-      padding-top:2rem;border-top:1px solid var(--border);
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
     }
-    .stat-item{display:flex;flex-direction:column}
-    .stat-num{
-      font-family:'Bebas Neue',sans-serif;font-size:2rem;
-      background:linear-gradient(135deg,var(--gold),var(--accent2));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-      line-height:1;
+
+    .stat-item {
+      display: flex;
+      flex-direction: column
     }
-    .stat-label{font-size:.72rem;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem}
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      background: linear-gradient(135deg, var(--gold), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: .72rem;
+      color: var(--text3);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-top: .2rem
+    }
 
     /* Hero right – burger */
-    .hero-right{
-      position:relative;z-index:2;
-      display:flex;align-items:center;justify-content:center;
+    .hero-right {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .burger-scene{position:relative;width:420px;height:420px}
-    .burger-glow-ring{
-      position:absolute;inset:15%;border-radius:50%;
-      background:radial-gradient(ellipse at center,rgba(255,107,0,0.22) 0%,transparent 70%);
-      animation:glowPulse 3s ease-in-out infinite;
+
+    .burger-scene {
+      position: relative;
+      width: 420px;
+      height: 420px
     }
-    @keyframes glowPulse{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.12);opacity:1}}
-    .burger-svg-wrap{
-      position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-      animation:floatBurger 4s ease-in-out infinite;
+
+    .burger-glow-ring {
+      position: absolute;
+      inset: 15%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(255, 107, 0, 0.22) 0%, transparent 70%);
+      animation: glowPulse 3s ease-in-out infinite;
     }
-    .hero-burger-photo{
-      width:360px;height:360px;
-      object-fit:cover;
-      border-radius:50%;
-      border:3px solid rgba(255,107,0,0.3);
+
+    @keyframes glowPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: .7
+      }
+
+      50% {
+        transform: scale(1.12);
+        opacity: 1
+      }
+    }
+
+    .burger-svg-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: floatBurger 4s ease-in-out infinite;
+    }
+
+    .hero-burger-photo {
+      width: 360px;
+      height: 360px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 107, 0, 0.3);
       box-shadow:
-        0 0 0 8px rgba(255,107,0,0.08),
-        0 0 0 16px rgba(255,107,0,0.04),
-        0 24px 80px rgba(0,0,0,0.7),
-        0 0 60px rgba(255,107,0,0.2);
+        0 0 0 8px rgba(255, 107, 0, 0.08),
+        0 0 0 16px rgba(255, 107, 0, 0.04),
+        0 24px 80px rgba(0, 0, 0, 0.7),
+        0 0 60px rgba(255, 107, 0, 0.2);
     }
-    @keyframes floatBurger{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-18px) rotate(2deg)}}
-    .burger-shadow{
-      position:absolute;bottom:8%;left:50%;transform:translateX(-50%);
-      width:200px;height:20px;border-radius:50%;
-      background:rgba(255,107,0,0.25);filter:blur(12px);
-      animation:shadowPulse 4s ease-in-out infinite;
+
+    @keyframes floatBurger {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(-2deg)
+      }
+
+      50% {
+        transform: translateY(-18px) rotate(2deg)
+      }
     }
-    @keyframes shadowPulse{0%,100%{width:200px;opacity:.6}50%{width:150px;opacity:.3}}
+
+    .burger-shadow {
+      position: absolute;
+      bottom: 8%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 107, 0, 0.25);
+      filter: blur(12px);
+      animation: shadowPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes shadowPulse {
+
+      0%,
+      100% {
+        width: 200px;
+        opacity: .6
+      }
+
+      50% {
+        width: 150px;
+        opacity: .3
+      }
+    }
 
     /* Badge decorativos flotantes */
-    .badge-float{
-      position:absolute;background:var(--bg3);border:1px solid var(--border2);
-      border-radius:12px;padding:.6rem .9rem;
-      display:flex;align-items:center;gap:.5rem;
-      box-shadow:0 8px 32px rgba(0,0,0,0.5);
-      animation:badgeFloat 5s ease-in-out infinite;
-      backdrop-filter:blur(8px);
+    .badge-float {
+      position: absolute;
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      padding: .6rem .9rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      animation: badgeFloat 5s ease-in-out infinite;
+      backdrop-filter: blur(8px);
     }
-    .badge-float:nth-child(3){top:10%;left:2%;animation-delay:.5s}
-    .badge-float:nth-child(4){top:15%;right:2%;animation-delay:1.2s}
-    .badge-float:nth-child(5){bottom:18%;left:0%;animation-delay:.8s}
-    @keyframes badgeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-    .badge-float .bf-icon{font-size:1.4rem}
-    .badge-float .bf-text{display:flex;flex-direction:column;line-height:1.2}
-    .badge-float .bf-title{font-size:.78rem;font-weight:700;color:var(--cream)}
-    .badge-float .bf-sub{font-size:.65rem;color:var(--text2)}
+
+    .badge-float:nth-child(3) {
+      top: 10%;
+      left: 2%;
+      animation-delay: .5s
+    }
+
+    .badge-float:nth-child(4) {
+      top: 15%;
+      right: 2%;
+      animation-delay: 1.2s
+    }
+
+    .badge-float:nth-child(5) {
+      bottom: 18%;
+      left: 0%;
+      animation-delay: .8s
+    }
+
+    @keyframes badgeFloat {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-6px)
+      }
+    }
+
+    .badge-float .bf-icon {
+      font-size: 1.4rem
+    }
+
+    .badge-float .bf-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2
+    }
+
+    .badge-float .bf-title {
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--cream)
+    }
+
+    .badge-float .bf-sub {
+      font-size: .65rem;
+      color: var(--text2)
+    }
 
     /* ── TICKER DE INGREDIENTES ── */
-    .ticker-wrap{
-      background:linear-gradient(135deg,var(--accent) 0%,#d45200 100%);
-      overflow:hidden;padding:.6rem 0;position:relative;
-      border-top:1px solid rgba(255,200,50,0.2);
-      border-bottom:1px solid rgba(255,200,50,0.2);
+    .ticker-wrap {
+      background: linear-gradient(135deg, var(--accent) 0%, #d45200 100%);
+      overflow: hidden;
+      padding: .6rem 0;
+      position: relative;
+      border-top: 1px solid rgba(255, 200, 50, 0.2);
+      border-bottom: 1px solid rgba(255, 200, 50, 0.2);
     }
-    .ticker-track{
-      display:flex;gap:0;white-space:nowrap;
-      animation:ticker 25s linear infinite;
+
+    .ticker-track {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+      animation: ticker 25s linear infinite;
     }
-    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    .ticker-item{
-      display:inline-flex;align-items:center;gap:.6rem;
-      padding:0 2rem;
-      font-family:'Barlow Condensed',sans-serif;font-weight:700;
-      font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.9);
+
+    @keyframes ticker {
+      from {
+        transform: translateX(0)
+      }
+
+      to {
+        transform: translateX(-50%)
+      }
     }
-    .ticker-sep{color:rgba(255,255,255,0.4);font-size:1.1rem}
+
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      padding: 0 2rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: .9rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .ticker-sep {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 1.1rem
+    }
 
     /* ── SECCIÓN MENÚ ── */
-    .menu-section{padding:4rem 0 3rem}
-    .container{max-width:1180px;margin:0 auto;padding:0 2rem}
-    .section-header{text-align:center;margin-bottom:3rem}
-    .section-tag{
-      display:inline-block;
-      font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;
-      color:var(--gold);background:rgba(245,200,66,0.1);
-      border:1px solid rgba(245,200,66,0.2);border-radius:50px;
-      padding:.3rem .9rem;margin-bottom:.8rem;
+    .menu-section {
+      padding: 4rem 0 3rem
     }
-    .section-title{
-      font-family:'Bebas Neue',sans-serif;font-size:clamp(2.2rem,5vw,3.5rem);
-      letter-spacing:.04em;line-height:1;color:var(--cream);
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 2rem
     }
-    .section-title em{
-      font-style:normal;
-      background:linear-gradient(135deg,var(--accent),var(--gold));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .15em;
+      color: var(--gold);
+      background: rgba(245, 200, 66, 0.1);
+      border: 1px solid rgba(245, 200, 66, 0.2);
+      border-radius: 50px;
+      padding: .3rem .9rem;
+      margin-bottom: .8rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      letter-spacing: .04em;
+      line-height: 1;
+      color: var(--cream);
+    }
+
+    .section-title em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     /* ── GALERÍA RÁPIDA ── */
-    .gallery-strip{background:var(--bg2);border-bottom:1px solid var(--border);overflow:hidden}
-    .gallery-strip-inner{display:flex;gap:0}
-    .gal-item{flex:1;position:relative;overflow:hidden;height:200px;cursor:pointer}
-    .gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease,filter .4s ease;filter:brightness(0.75) saturate(1.1)}
-    .gal-item:hover img{transform:scale(1.08);filter:brightness(0.9) saturate(1.3)}
-    .gal-label{
-      position:absolute;bottom:0;left:0;right:0;
-      padding:.6rem .8rem;
-      background:linear-gradient(0deg,rgba(0,0,0,0.75) 0%,transparent 100%);
-      font-family:'Barlow Condensed',sans-serif;font-weight:700;
-      font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;
-      color:var(--cream);
+    .gallery-strip {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden
     }
-    @media(max-width:600px){
-      .gal-item:nth-child(n+4){display:none}
-      .gal-item{height:130px}
+
+    .gallery-strip-inner {
+      display: flex;
+      gap: 0
+    }
+
+    .gal-item {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      height: 200px;
+      cursor: pointer
+    }
+
+    .gal-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s ease, filter .4s ease;
+      filter: brightness(0.75) saturate(1.1)
+    }
+
+    .gal-item:hover img {
+      transform: scale(1.08);
+      filter: brightness(0.9) saturate(1.3)
+    }
+
+    .gal-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: .6rem .8rem;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.75) 0%, transparent 100%);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: .85rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+
+    @media(max-width:600px) {
+      .gal-item:nth-child(n+4) {
+        display: none
+      }
+
+      .gal-item {
+        height: 130px
+      }
     }
 
     /* CATEGORÍA TÍTULO */
-    .cat-title{
-      display:flex;align-items:center;gap:.75rem;
-      margin:3rem 0 1.5rem;
-      font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;
-      color:var(--text3);text-transform:uppercase;letter-spacing:.12em;
+    .cat-title {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin: 3rem 0 1.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: .12em;
     }
-    .cat-icon{font-size:1.3rem}
-    .cat-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
+
+    .cat-icon {
+      font-size: 1.3rem
+    }
+
+    .cat-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border2), transparent)
+    }
 
     /* GRID PRODUCTOS */
-    .prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.25rem}
+    .prod-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.25rem
+    }
 
     /* CARD PRODUCTO */
-    .prod-card{
-      background:var(--bg2);border:1px solid var(--border);
-      border-radius:18px;overflow:hidden;
-      transition:all .25s;cursor:default;
-      position:relative;
+    .prod-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: all .25s;
+      cursor: default;
+      position: relative;
     }
-    .prod-card::before{
-      content:'';position:absolute;inset:0;
-      background:linear-gradient(135deg,rgba(255,107,0,0.04),transparent);
-      opacity:0;transition:opacity .25s;border-radius:18px;
-      pointer-events:none;
+
+    .prod-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 107, 0, 0.04), transparent);
+      opacity: 0;
+      transition: opacity .25s;
+      border-radius: 18px;
+      pointer-events: none;
     }
-    .prod-card:hover{
-      border-color:rgba(255,107,0,.5);
-      transform:translateY(-5px);
-      box-shadow:0 20px 48px rgba(0,0,0,.5),0 0 0 1px rgba(255,107,0,.12);
+
+    .prod-card:hover {
+      border-color: rgba(255, 107, 0, .5);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, .5), 0 0 0 1px rgba(255, 107, 0, .12);
     }
-    .prod-card:hover::before{opacity:1}
-    .prod-img{height:170px;overflow:hidden;background:var(--bg3);position:relative}
-    .prod-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
-    .prod-card:hover .prod-img img{transform:scale(1.08)}
-    .prod-img-placeholder{
-      height:100%;display:flex;align-items:center;justify-content:center;
-      font-size:3rem;opacity:.2;
-      background:radial-gradient(ellipse at center,rgba(255,107,0,0.07),transparent);
+
+    .prod-card:hover::before {
+      opacity: 1
     }
-    .prod-badge{
-      position:absolute;top:10px;left:10px;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      color:white;font-size:.62rem;font-weight:800;
-      padding:.2rem .65rem;border-radius:20px;
-      text-transform:uppercase;letter-spacing:.07em;
-      box-shadow:0 3px 12px rgba(255,107,0,0.5);
+
+    .prod-img {
+      height: 170px;
+      overflow: hidden;
+      background: var(--bg3);
+      position: relative
     }
-    .prod-body{padding:1rem 1.1rem}
-    .prod-name{
-      font-family:'Barlow Condensed',sans-serif;font-weight:700;
-      font-size:1.1rem;letter-spacing:.02em;margin-bottom:.25rem;color:var(--cream);
+
+    .prod-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s
     }
-    .prod-desc{color:var(--text3);font-size:.78rem;line-height:1.45;margin-bottom:.9rem;min-height:2em}
-    .prod-foot{display:flex;align-items:center;justify-content:space-between}
-    .prod-price{
-      font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.04em;
-      background:linear-gradient(135deg,var(--accent),var(--gold));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+
+    .prod-card:hover .prod-img img {
+      transform: scale(1.08)
     }
-    .add-btn{
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      color:white;border:none;border-radius:50px;
-      padding:.5rem 1.2rem;font-size:.82rem;font-weight:700;
-      cursor:pointer;transition:all .18s;
-      display:inline-flex;align-items:center;gap:.4rem;
-      text-transform:uppercase;letter-spacing:.05em;
-      box-shadow:0 4px 14px rgba(255,107,0,0.35);
-      position:relative;z-index:10;
+
+    .prod-img-placeholder {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      opacity: .2;
+      background: radial-gradient(ellipse at center, rgba(255, 107, 0, 0.07), transparent);
     }
-    .add-btn:hover{transform:scale(1.07);box-shadow:0 6px 20px rgba(255,107,0,0.55)}
-    .add-btn:active{transform:scale(.96)}
+
+    .prod-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      font-size: .62rem;
+      font-weight: 800;
+      padding: .2rem .65rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      box-shadow: 0 3px 12px rgba(255, 107, 0, 0.5);
+    }
+
+    .prod-body {
+      padding: 1rem 1.1rem
+    }
+
+    .prod-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: .02em;
+      margin-bottom: .25rem;
+      color: var(--cream);
+    }
+
+    .prod-desc {
+      color: var(--text3);
+      font-size: .78rem;
+      line-height: 1.45;
+      margin-bottom: .9rem;
+      min-height: 2em
+    }
+
+    .prod-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .prod-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: .04em;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .add-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: .5rem 1.2rem;
+      font-size: .82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .18s;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35);
+      position: relative;
+      z-index: 10;
+    }
+
+    .add-btn:hover {
+      transform: scale(1.07);
+      box-shadow: 0 6px 20px rgba(255, 107, 0, 0.55)
+    }
+
+    .add-btn:active {
+      transform: scale(.96)
+    }
 
     /* EMPTY STATE */
-    .empty-menu{text-align:center;padding:5rem 1rem;color:var(--text3)}
-    .empty-menu .em-icon{font-size:4rem;margin-bottom:1rem;display:block;opacity:.25}
+    .empty-menu {
+      text-align: center;
+      padding: 5rem 1rem;
+      color: var(--text3)
+    }
+
+    .empty-menu .em-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      display: block;
+      opacity: .25
+    }
 
     /* ── CARRITO FLOTANTE ── */
-    .cart-fab{
-      position:fixed;bottom:1.75rem;right:1.75rem;z-index:200;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      color:white;border:none;border-radius:50px;padding:.8rem 1.5rem;
-      font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;
-      letter-spacing:.06em;text-transform:uppercase;
-      cursor:pointer;display:none;align-items:center;gap:.65rem;
-      box-shadow:0 8px 32px var(--glow),0 4px 12px rgba(0,0,0,.4);
-      transition:transform .15s;animation:pop .3s cubic-bezier(.34,1.56,.64,1);
+    .cart-fab {
+      position: fixed;
+      bottom: 1.75rem;
+      right: 1.75rem;
+      z-index: 200;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: .8rem 1.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      gap: .65rem;
+      box-shadow: 0 8px 32px var(--glow), 0 4px 12px rgba(0, 0, 0, .4);
+      transition: transform .15s;
+      animation: pop .3s cubic-bezier(.34, 1.56, .64, 1);
     }
-    @keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
-    .cart-fab:hover{transform:translateY(-2px)}
-    .cart-badge{
-      background:white;color:var(--accent);border-radius:50%;
-      width:22px;height:22px;display:flex;align-items:center;justify-content:center;
-      font-size:.7rem;font-weight:900;
+
+    @keyframes pop {
+      from {
+        opacity: 0;
+        transform: scale(.6)
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1)
+      }
+    }
+
+    .cart-fab:hover {
+      transform: translateY(-2px)
+    }
+
+    .cart-badge {
+      background: white;
+      color: var(--accent);
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .7rem;
+      font-weight: 900;
     }
 
     /* ── MODAL CARRITO ── */
-    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;backdrop-filter:blur(6px);align-items:flex-end;justify-content:center}
-    .overlay.open{display:flex}
-    .modal{
-      background:var(--bg2);border:1px solid var(--border2);
-      border-radius:22px 22px 0 0;width:100%;max-width:480px;
-      max-height:82vh;overflow-y:auto;padding:1.75rem;
-      animation:slideUp .28s cubic-bezier(.34,1.2,.64,1);
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .7);
+      z-index: 300;
+      backdrop-filter: blur(6px);
+      align-items: flex-end;
+      justify-content: center
     }
-    @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-    .modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
-    .modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:.06em;color:var(--gold)}
-    .close-btn{
-      background:var(--bg3);border:1px solid var(--border);
-      color:var(--text2);border-radius:50%;width:32px;height:32px;
-      cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .15s;
+
+    .overlay.open {
+      display: flex
     }
-    .close-btn:hover{background:var(--bg4);color:var(--cream)}
-    .cart-item{display:flex;align-items:center;justify-content:space-between;padding:.75rem 0;border-bottom:1px solid var(--border)}
-    .cart-item:last-child{border-bottom:none}
-    .ci-name{font-weight:700;font-size:.92rem;margin-bottom:.1rem;color:var(--cream)}
-    .ci-price{color:var(--text3);font-size:.78rem}
-    .qty-ctrl{display:flex;align-items:center;gap:.55rem}
-    .qty-btn{background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .15s}
-    .qty-btn:hover{background:var(--bg4)}
-    .qty-plus{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:white}
-    .qty-plus:hover{filter:brightness(1.15)}
-    .qty-num{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.04em;min-width:20px;text-align:center}
-    .divider{border:none;border-top:1px solid var(--border);margin:1.1rem 0}
-    .total-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
-    .total-label{font-weight:700;font-size:1rem;color:var(--text2);text-transform:uppercase;letter-spacing:.06em}
-    .total-val{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.04em;color:var(--gold)}
-    .pedir-btn{
-      width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));
-      color:white;border:none;border-radius:12px;padding:.9rem;
-      font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.05rem;
-      letter-spacing:.07em;text-transform:uppercase;
-      cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;
-      text-decoration:none;transition:all .18s;
-      box-shadow:0 6px 24px rgba(255,107,0,0.4);
+
+    .modal {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 22px 22px 0 0;
+      width: 100%;
+      max-width: 480px;
+      max-height: 82vh;
+      overflow-y: auto;
+      padding: 1.75rem;
+      animation: slideUp .28s cubic-bezier(.34, 1.2, .64, 1);
     }
-    .pedir-btn:hover{transform:translateY(-1px);box-shadow:0 10px 32px rgba(255,107,0,0.55);color:white}
-    .empty-cart{text-align:center;padding:2.5rem 1rem;color:var(--text3)}
-    .empty-cart i{font-size:2.8rem;margin-bottom:.9rem;display:block;opacity:.3}
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%)
+      }
+
+      to {
+        transform: translateY(0)
+      }
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem
+    }
+
+    .modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: .06em;
+      color: var(--gold)
+    }
+
+    .close-btn {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .15s;
+    }
+
+    .close-btn:hover {
+      background: var(--bg4);
+      color: var(--cream)
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .75rem 0;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .cart-item:last-child {
+      border-bottom: none
+    }
+
+    .ci-name {
+      font-weight: 700;
+      font-size: .92rem;
+      margin-bottom: .1rem;
+      color: var(--cream)
+    }
+
+    .ci-price {
+      color: var(--text3);
+      font-size: .78rem
+    }
+
+    .qty-ctrl {
+      display: flex;
+      align-items: center;
+      gap: .55rem
+    }
+
+    .qty-btn {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      border-radius: 7px;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      font-size: .95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .15s
+    }
+
+    .qty-btn:hover {
+      background: var(--bg4)
+    }
+
+    .qty-plus {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-color: transparent;
+      color: white
+    }
+
+    .qty-plus:hover {
+      filter: brightness(1.15)
+    }
+
+    .qty-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: .04em;
+      min-width: 20px;
+      text-align: center
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.1rem 0
+    }
+
+    .total-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.1rem
+    }
+
+    .total-label {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: .06em
+    }
+
+    .total-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      letter-spacing: .04em;
+      color: var(--gold)
+    }
+
+    .pedir-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: .9rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      text-decoration: none;
+      transition: all .18s;
+      box-shadow: 0 6px 24px rgba(255, 107, 0, 0.4);
+    }
+
+    .pedir-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 32px rgba(255, 107, 0, 0.55);
+      color: white
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--text3)
+    }
+
+    .empty-cart i {
+      font-size: 2.8rem;
+      margin-bottom: .9rem;
+      display: block;
+      opacity: .3
+    }
 
     /* ── FOOTER ── */
-    footer{
-      text-align:center;padding:2.5rem 1rem;color:var(--text3);
-      border-top:1px solid var(--border);margin-top:4rem;font-size:.8rem;
-      font-family:'Barlow Condensed',sans-serif;letter-spacing:.06em;font-weight:600;text-transform:uppercase;
+    footer {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--text3);
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+      font-size: .8rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: .06em;
+      font-weight: 600;
+      text-transform: uppercase;
     }
-    footer span{color:var(--accent)}
+
+    footer span {
+      color: var(--accent)
+    }
 
     /* ── RESPONSIVE ── */
-    @media(max-width:768px){
-      .hero{grid-template-columns:1fr;padding:90px 1.5rem 3rem;text-align:center;gap:1.5rem}
-      .hero-right{order:-1}
-      .burger-scene{width:280px;height:280px}
-      .badge-float{display:none}
-      .hero-sub{margin:0 auto 2rem}
-      .hero-actions{justify-content:center}
-      .hero-stats{justify-content:center}
-      nav{padding:0 1.25rem}
+    @media(max-width:768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 90px 1.5rem 3rem;
+        text-align: center;
+        gap: 1.5rem
+      }
+
+      .hero-right {
+        order: -1
+      }
+
+      .burger-scene {
+        width: 280px;
+        height: 280px
+      }
+
+      .badge-float {
+        display: none
+      }
+
+      .hero-sub {
+        margin: 0 auto 2rem
+      }
+
+      .hero-actions {
+        justify-content: center
+      }
+
+      .hero-stats {
+        justify-content: center
+      }
+
+      nav {
+        padding: 0 1.25rem
+      }
     }
   </style>
 </head>
+
 <body>
 
-<!-- ══ NAV ══ -->
-<nav>
-  <a href="/" class="brand">
-    <span class="brand-icon">🍔</span>
-    BRUTUS <em>&nbsp;BURGER</em>&nbsp;MASTER
-  </a>
-  <div class="nav-links">
-    <a href="/" class="nav-a"><i class="bi bi-house-fill"></i> Inicio</a>
-    <a href="/hacer-pedido/" class="nav-a"><i class="bi bi-bag-fill"></i> Pedir</a>
-    <a href="/usuarios/login/" class="nav-btn"><i class="bi bi-person-lock"></i> Personal</a>
-  </div>
-</nav>
-
-<!-- ══ HERO ══ -->
-<section class="hero">
-  <canvas id="particles"></canvas>
-
-  <!-- LEFT -->
-  <div class="hero-left">
-    <div class="hero-eyebrow">
-      <span></span> Abierto ahora &nbsp;·&nbsp; Valle de Córdoba
+  <!-- ══ NAV ══ -->
+  <nav>
+    <a href="/" class="brand">
+      <span class="brand-icon">🍔</span>
+      BRUTUS <em>&nbsp;BURGER</em>&nbsp;MASTER
+    </a>
+    <div class="nav-links">
+      <a href="/" class="nav-a"><i class="bi bi-house-fill"></i> Inicio</a>
+      <a href="/hacer-pedido/" class="nav-a"><i class="bi bi-bag-fill"></i> Pedir</a>
+      <a href="/usuarios/login/" class="nav-btn"><i class="bi bi-person-lock"></i> Personal</a>
     </div>
+  </nav>
 
-    <h1 class="hero-h1">
-      <span class="line1">BRUTUS</span>
-      <span class="line2">BURGER</span>
-      <span class="line3">MASTER</span>
-    </h1>
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+    <canvas id="particles"></canvas>
 
-    <p class="hero-sub">
-      Hamburguesas <strong>artesanales</strong> con carne premium,<br>
-      ingredientes frescos y salsas secretas que te van a <strong>volar la cabeza</strong>.
-    </p>
-
-    <div class="hero-actions">
-      <button class="btn-primary" onclick="document.getElementById('menu-section').scrollIntoView({behavior:'smooth'})">
-        <i class="bi bi-bag-heart-fill"></i> Realiza tu pedido
-      </button>
-      <button class="btn-secondary" onclick="document.getElementById('menu-section').scrollIntoView({behavior:'smooth'})">
-        <i class="bi bi-grid-3x3-gap"></i> Ver menú
-      </button>
-    </div>
-
-    <div class="hero-stats">
-      <div class="stat-item">
-        <span class="stat-num">50+</span>
-        <span class="stat-label">Opciones</span>
+    <!-- LEFT -->
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span></span> Abierto ahora &nbsp;·&nbsp; Valle de Córdoba
       </div>
-      <div class="stat-item">
-        <span class="stat-num">⭐ 4.9</span>
-        <span class="stat-label">Calificación</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">15'</span>
-        <span class="stat-label">Tiempo mín.</span>
-      </div>
-    </div>
-  </div>
 
-  <!-- RIGHT: BURGER SCENE -->
-  <div class="hero-right">
-    <div class="burger-scene">
-      <div class="burger-glow-ring"></div>
+      <h1 class="hero-h1">
+        <span class="line1">BRUTUS</span>
+        <span class="line2">BURGER</span>
+        <span class="line3">MASTER</span>
+      </h1>
 
-      <!-- Badges flotantes -->
-      <div class="badge-float">
-        <span class="bf-icon">🧀</span>
-        <div class="bf-text">
-          <span class="bf-title">100% Natural</span>
-          <span class="bf-sub">Sin conservantes</span>
+      <p class="hero-sub">
+        Hamburguesas <strong>artesanales</strong> con carne premium,<br>
+        ingredientes frescos y salsas secretas que te van a <strong>volar la cabeza</strong>.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn-primary"
+          onclick="document.getElementById('menu-section').scrollIntoView({behavior:'smooth'})">
+          <i class="bi bi-bag-heart-fill"></i> Realiza tu pedido
+        </button>
+        <button class="btn-secondary"
+          onclick="document.getElementById('menu-section').scrollIntoView({behavior:'smooth'})">
+          <i class="bi bi-grid-3x3-gap"></i> Ver menú
+        </button>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">50+</span>
+          <span class="stat-label">Opciones</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">⭐ 4.9</span>
+          <span class="stat-label">Calificación</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">15'</span>
+          <span class="stat-label">Tiempo mín.</span>
         </div>
       </div>
-      <div class="badge-float">
-        <span class="bf-icon">🔥</span>
-        <div class="bf-text">
-          <span class="bf-title">A la Parrilla</span>
-          <span class="bf-sub">Carbón premium</span>
-        </div>
-      </div>
-      <div class="badge-float">
-        <span class="bf-icon">🥩</span>
-        <div class="bf-text">
-          <span class="bf-title">Carne Premium</span>
-          <span class="bf-sub">180g por burger</span>
-        </div>
-      </div>
-
-      <div class="burger-svg-wrap">
-        <img
-          src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=85"
-          alt="Hamburguesa Brutus Burger Master"
-          class="hero-burger-photo"
-        >
-      </div>
-
-      <div class="burger-shadow"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ GALERÍA RÁPIDA ══ -->
-<div class="gallery-strip">
-  <div class="gallery-strip-inner">
-    <div class="gal-item">
-      <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&auto=format&fit=crop&q=80" alt="Burger clásica">
-      <div class="gal-label">Clásica BBQ</div>
-    </div>
-    <div class="gal-item">
-      <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=400&auto=format&fit=crop&q=80" alt="Doble carne">
-      <div class="gal-label">Doble Smash</div>
-    </div>
-    <div class="gal-item">
-      <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&auto=format&fit=crop&q=80" alt="Burger queso">
-      <div class="gal-label">Cheese Master</div>
-    </div>
-    <div class="gal-item">
-      <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&auto=format&fit=crop&q=80" alt="Burger gourmet">
-      <div class="gal-label">Gourmet Deluxe</div>
-    </div>
-    <div class="gal-item">
-      <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&auto=format&fit=crop&q=80" alt="Burger papas">
-      <div class="gal-label">Combo Papas</div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ TICKER ══ -->
-<div class="ticker-wrap">
-  <div class="ticker-track">
-    <span class="ticker-item">🍔 Smash Burger <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🧀 Doble Queso <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🔥 BBQ Master <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🥓 Bacon Crujiente <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🌶️ Picante Extremo <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🥑 Guacamole Fresh <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🍟 Papas Supremas <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🥤 Milkshakes <span class="ticker-sep">✦</span></span>
-    <!-- duplicado para loop infinito -->
-    <span class="ticker-item">🍔 Smash Burger <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🧀 Doble Queso <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🔥 BBQ Master <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🥓 Bacon Crujiente <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🌶️ Picante Extremo <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🥑 Guacamole Fresh <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🍟 Papas Supremas <span class="ticker-sep">✦</span></span>
-    <span class="ticker-item">🥤 Milkshakes <span class="ticker-sep">✦</span></span>
-  </div>
-</div>
-
-<!-- ══ MENÚ ══ -->
-<div class="menu-section" id="menu-section">
-  <div class="container">
-
-    <div class="section-header">
-      <div class="section-tag">✦ Nuestro Menú</div>
-      <h2 class="section-title">Elige tu <em>favorita</em></h2>
     </div>
 
-    {% if destacados %}
-    <div class="cat-title"><span class="cat-icon">⭐</span> Destacados</div>
-    <div class="prod-grid">
-      {% for p in destacados %}
-      <div class="prod-card">
-        <div class="prod-img">
-          {% if p.imagen %}
-            <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
-          {% else %}
-            <img src="" alt="{{ p.nombre }}" data-fallback-id="{{ p.pk }}" data-category="{{ p.categoria.nombre|default:'Hamburguesas' }}">
-          {% endif %}
-          <div class="prod-badge">Destacado</div>
-        </div>
-        <div class="prod-body">
-          <div class="prod-name">{{ p.nombre }}</div>
-          <div class="prod-desc">{{ p.descripcion }}</div>
-          <div class="prod-foot">
-            <span class="prod-price">${{ p.precio|floatformat:0 }}</span>
-            <button class="add-btn" type="button" data-id="{{ p.pk }}" data-name="{{ p.nombre|escapejs }}" data-price="{{ p.precio }}">
-              <i class="bi bi-plus-lg"></i> Agregar
-            </button>
+    <!-- RIGHT: BURGER SCENE -->
+    <div class="hero-right">
+      <div class="burger-scene">
+        <div class="burger-glow-ring"></div>
+
+        <!-- Badges flotantes -->
+        <div class="badge-float">
+          <span class="bf-icon">🧀</span>
+          <div class="bf-text">
+            <span class="bf-title">100% Natural</span>
+            <span class="bf-sub">Sin conservantes</span>
           </div>
         </div>
+        <div class="badge-float">
+          <span class="bf-icon">🔥</span>
+          <div class="bf-text">
+            <span class="bf-title">A la Parrilla</span>
+            <span class="bf-sub">Carbón premium</span>
+          </div>
+        </div>
+        <div class="badge-float">
+          <span class="bf-icon">🥩</span>
+          <div class="bf-text">
+            <span class="bf-title">Carne Premium</span>
+            <span class="bf-sub">180g por burger</span>
+          </div>
+        </div>
+
+        <div class="burger-svg-wrap">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=85"
+            alt="Hamburguesa Brutus Burger Master" class="hero-burger-photo">
+        </div>
+
+        <div class="burger-shadow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ GALERÍA RÁPIDA ══ -->
+  <div class="gallery-strip">
+    <div class="gallery-strip-inner">
+      <div class="gal-item">
+        <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&auto=format&fit=crop&q=80"
+          alt="Burger clásica">
+        <div class="gal-label">Clásica BBQ</div>
+      </div>
+      <div class="gal-item">
+        <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=400&auto=format&fit=crop&q=80"
+          alt="Doble carne">
+        <div class="gal-label">Doble Smash</div>
+      </div>
+      <div class="gal-item">
+        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&auto=format&fit=crop&q=80"
+          alt="Burger queso">
+        <div class="gal-label">Cheese Master</div>
+      </div>
+      <div class="gal-item">
+        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&auto=format&fit=crop&q=80"
+          alt="Burger gourmet">
+        <div class="gal-label">Gourmet Deluxe</div>
+      </div>
+      <div class="gal-item">
+        <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&auto=format&fit=crop&q=80"
+          alt="Burger papas">
+        <div class="gal-label">Combo Papas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TICKER ══ -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <span class="ticker-item">🍔 Smash Burger <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🧀 Doble Queso <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🔥 BBQ Master <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🥓 Bacon Crujiente <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🌶️ Picante Extremo <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🥑 Guacamole Fresh <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🍟 Papas Supremas <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🥤 Milkshakes <span class="ticker-sep">✦</span></span>
+      <!-- duplicado para loop infinito -->
+      <span class="ticker-item">🍔 Smash Burger <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🧀 Doble Queso <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🔥 BBQ Master <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🥓 Bacon Crujiente <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🌶️ Picante Extremo <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🥑 Guacamole Fresh <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🍟 Papas Supremas <span class="ticker-sep">✦</span></span>
+      <span class="ticker-item">🥤 Milkshakes <span class="ticker-sep">✦</span></span>
+    </div>
+  </div>
+
+  <!-- ══ MENÚ ══ -->
+  <div class="menu-section" id="menu-section">
+    <div class="container">
+
+      <div class="section-header">
+        <div class="section-tag">✦ Nuestro Menú</div>
+        <h2 class="section-title">Elige tu <em>favorita</em></h2>
+      </div>
+
+      {% if destacados %}
+      <div class="cat-title"><span class="cat-icon">⭐</span> Destacados</div>
+      <div class="prod-grid">
+        {% for p in destacados %}
+        <div class="prod-card">
+          <div class="prod-img">
+            {% if p.imagen %}
+            <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
+            {% else %}
+            <img src="" alt="{{ p.nombre }}" data-fallback-id="{{ p.pk }}"
+              data-category="{{ p.categoria.nombre|default:'Hamburguesas' }}">
+            {% endif %}
+            <div class="prod-badge">Destacado</div>
+          </div>
+          <div class="prod-body">
+            <div class="prod-name">{{ p.nombre }}</div>
+            <div class="prod-desc">{{ p.descripcion }}</div>
+            <div class="prod-foot">
+              <span class="prod-price">${{ p.precio|floatformat:0 }}</span>
+              <button class="add-btn" type="button" data-id="{{ p.pk }}" data-name="{{ p.nombre|escapejs }}"
+                data-price="{{ p.precio }}">
+                <i class="bi bi-plus-lg"></i> Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% for cat in categorias %}
+      {% if cat.productos.all %}
+      <div class="cat-title"><span class="cat-icon">{{ cat.icono }}</span> {{ cat.nombre }}</div>
+      <div class="prod-grid">
+        {% for p in cat.productos.all %}{% if p.disponible %}
+        <div class="prod-card">
+          <div class="prod-img">
+            {% if p.imagen %}
+            <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
+            {% else %}
+            <img src="" alt="{{ p.nombre }}" data-fallback-id="{{ p.pk }}"
+              data-category="{{ cat.nombre|default:'Hamburguesas' }}">
+            {% endif %}
+          </div>
+          <div class="prod-body">
+            <div class="prod-name">{{ p.nombre }}</div>
+            <div class="prod-desc">{{ p.descripcion }}</div>
+            <div class="prod-foot">
+              <span class="prod-price">${{ p.precio|floatformat:0 }}</span>
+              <button class="add-btn" type="button" data-id="{{ p.pk }}" data-name="{{ p.nombre|escapejs }}"
+                data-price="{{ p.precio }}">
+                <i class="bi bi-plus-lg"></i> Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+        {% endif %}{% endfor %}
+      </div>
+      {% endif %}
+      {% empty %}
+      <div class="empty-menu">
+        <span class="em-icon">🍔</span>
+        <p>El menú está siendo preparado. Vuelve pronto.</p>
       </div>
       {% endfor %}
-    </div>
-    {% endif %}
 
-    {% for cat in categorias %}
-    {% if cat.productos.all %}
-    <div class="cat-title"><span class="cat-icon">{{ cat.icono }}</span> {{ cat.nombre }}</div>
-    <div class="prod-grid">
-      {% for p in cat.productos.all %}{% if p.disponible %}
-      <div class="prod-card">
-        <div class="prod-img">
-          {% if p.imagen %}
-            <img src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
-          {% else %}
-            <img src="" alt="{{ p.nombre }}" data-fallback-id="{{ p.pk }}" data-category="{{ cat.nombre|default:'Hamburguesas' }}">
-          {% endif %}
-        </div>
-        <div class="prod-body">
-          <div class="prod-name">{{ p.nombre }}</div>
-          <div class="prod-desc">{{ p.descripcion }}</div>
-          <div class="prod-foot">
-            <span class="prod-price">${{ p.precio|floatformat:0 }}</span>
-            <button class="add-btn" type="button" data-id="{{ p.pk }}" data-name="{{ p.nombre|escapejs }}" data-price="{{ p.precio }}">
-              <i class="bi bi-plus-lg"></i> Agregar
-            </button>
-          </div>
-        </div>
-      </div>
-      {% endif %}{% endfor %}
-    </div>
-    {% endif %}
-    {% empty %}
-    <div class="empty-menu">
-      <span class="em-icon">🍔</span>
-      <p>El menú está siendo preparado. Vuelve pronto.</p>
-    </div>
-    {% endfor %}
-
-  </div>
-</div>
-
-<!-- ══ CARRITO ══ -->
-<button class="cart-fab" id="cartFab" onclick="openCart()">
-  <i class="bi bi-bag-fill"></i> Mi pedido
-  <span class="cart-badge" id="cartCount">0</span>
-</button>
-
-<div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()">
-  <div class="modal">
-    <div class="modal-head">
-      <span class="modal-title">🛒 MI PEDIDO</span>
-      <button class="close-btn" onclick="closeCart()"><i class="bi bi-x-lg"></i></button>
-    </div>
-    <div id="cartBody"></div>
-    <div id="cartFooter" style="display:none">
-      <hr class="divider">
-      <div class="total-row">
-        <span class="total-label">Total</span>
-        <span class="total-val" id="cartTotal">$0</span>
-      </div>
-      <a href="/hacer-pedido/" class="pedir-btn" id="pedirBtn">
-        <i class="bi bi-check-circle-fill"></i> Completar pedido
-      </a>
     </div>
   </div>
-</div>
 
-<footer>
-  <span>🍔 Brutus Burger Master</span> &nbsp;·&nbsp; &copy; 2025 &nbsp;·&nbsp; Sabor con tecnología
-</footer>
+  <!-- ══ CARRITO ══ -->
+  <button class="cart-fab" id="cartFab" onclick="openCart()">
+    <i class="bi bi-bag-fill"></i> Mi pedido
+    <span class="cart-badge" id="cartCount">0</span>
+  </button>
 
-<script>
-/* ── PARTÍCULAS ── */
-(function(){
-  const canvas = document.getElementById('particles');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles = [];
+  <div class="overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()">
+    <div class="modal">
+      <div class="modal-head">
+        <span class="modal-title">🛒 MI PEDIDO</span>
+        <button class="close-btn" onclick="closeCart()"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div id="cartBody"></div>
+      <div id="cartFooter" style="display:none">
+        <hr class="divider">
+        <div class="total-row">
+          <span class="total-label">Total</span>
+          <span class="total-val" id="cartTotal">$0</span>
+        </div>
+        <a href="/hacer-pedido/" class="pedir-btn" id="pedirBtn">
+          <i class="bi bi-check-circle-fill"></i> Completar pedido
+        </a>
+      </div>
+    </div>
+  </div>
 
-  function resize(){
-    W = canvas.width = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
+  <footer>
+    🍔 Brutus Burger Master &copy; 2026 — El sabor de la victoria
+    <br>Desarrollado por Miguel Varilla, Juan Ortiz, Davinson Martinez, Javier Vega, Juan Salgado
+    <br>Montería - Córdoba
+    <br>Todos los derechos reservados.
+  </footer>
 
-  function randomParticle(){
-    return {
-      x: Math.random() * W,
-      y: H + 10,
-      r: Math.random() * 2.5 + 0.5,
-      speed: Math.random() * 0.6 + 0.2,
-      drift: (Math.random() - 0.5) * 0.4,
-      opacity: Math.random() * 0.5 + 0.2,
-      color: Math.random() > 0.6 ? '#f5c842' : '#ff6b00',
-      life: 0,
-      maxLife: Math.random() * 200 + 150
-    };
-  }
+  <script>
+    /* ── PARTÍCULAS ── */
+    (function () {
+      const canvas = document.getElementById('particles');
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [];
 
-  for(let i=0;i<60;i++){
-    const p = randomParticle();
-    p.y = Math.random() * H;
-    p.life = Math.random() * p.maxLife;
-    particles.push(p);
-  }
+      function resize() {
+        W = canvas.width = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
 
-  function animate(){
-    ctx.clearRect(0,0,W,H);
-    particles.forEach((p,i)=>{
-      p.life++;
-      if(p.life > p.maxLife){ particles[i] = randomParticle(); return; }
-      const progress = p.life / p.maxLife;
-      const fade = progress < 0.1 ? progress*10 : progress > 0.8 ? (1-progress)*5 : 1;
-      p.x += p.drift;
-      p.y -= p.speed;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctx.fillStyle = p.color;
-      ctx.globalAlpha = p.opacity * fade;
-      ctx.fill();
-      ctx.globalAlpha = 1;
+      function randomParticle() {
+        return {
+          x: Math.random() * W,
+          y: H + 10,
+          r: Math.random() * 2.5 + 0.5,
+          speed: Math.random() * 0.6 + 0.2,
+          drift: (Math.random() - 0.5) * 0.4,
+          opacity: Math.random() * 0.5 + 0.2,
+          color: Math.random() > 0.6 ? '#f5c842' : '#ff6b00',
+          life: 0,
+          maxLife: Math.random() * 200 + 150
+        };
+      }
+
+      for (let i = 0; i < 60; i++) {
+        const p = randomParticle();
+        p.y = Math.random() * H;
+        p.life = Math.random() * p.maxLife;
+        particles.push(p);
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach((p, i) => {
+          p.life++;
+          if (p.life > p.maxLife) { particles[i] = randomParticle(); return; }
+          const progress = p.life / p.maxLife;
+          const fade = progress < 0.1 ? progress * 10 : progress > 0.8 ? (1 - progress) * 5 : 1;
+          p.x += p.drift;
+          p.y -= p.speed;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.opacity * fade;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    /* ── CARRITO ── */
+    let cart = JSON.parse(localStorage.getItem('bs_cart') || '[]');
+
+    function addToCart(btn, id, nombre, precio) {
+      const idx = cart.findIndex(i => i.id === id);
+      if (idx >= 0) cart[idx].qty++;
+      else cart.push({ id, nombre, precio: precio, qty: 1, comentarios: '' });
+      save(); renderCart(); openCart();
+      btn.innerHTML = '<i class="bi bi-check-lg"></i> Listo';
+      btn.style.background = 'linear-gradient(135deg,#22c55e,#16a34a)';
+      setTimeout(() => { btn.innerHTML = '<i class="bi bi-plus-lg"></i> Agregar'; btn.style.background = ''; }, 1200);
+    }
+
+    /* Event delegation for all add-to-cart buttons */
+    document.addEventListener('click', function (e) {
+      const btn = e.target.closest('.add-btn');
+      if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const id = parseInt(btn.dataset.id);
+      const nombre = btn.dataset.name;
+      const precio = parseFloat(String(btn.dataset.price).replace(',', '.'));
+      if (id && nombre && !isNaN(precio)) {
+        addToCart(btn, id, nombre, precio);
+      }
     });
-    requestAnimationFrame(animate);
-  }
-  animate();
-})();
 
-/* ── CARRITO ── */
-let cart = JSON.parse(localStorage.getItem('bs_cart') || '[]');
+    function save() { localStorage.setItem('bs_cart', JSON.stringify(cart)); }
 
-function addToCart(btn, id, nombre, precio) {
-  const idx = cart.findIndex(i => i.id === id);
-  if(idx >= 0) cart[idx].qty++;
-  else cart.push({id, nombre, precio: precio, qty: 1, comentarios: ''});
-  save(); renderCart(); openCart();
-  btn.innerHTML = '<i class="bi bi-check-lg"></i> Listo';
-  btn.style.background = 'linear-gradient(135deg,#22c55e,#16a34a)';
-  setTimeout(()=>{ btn.innerHTML = '<i class="bi bi-plus-lg"></i> Agregar'; btn.style.background=''; }, 1200);
-}
-
-/* Event delegation for all add-to-cart buttons */
-document.addEventListener('click', function(e) {
-  const btn = e.target.closest('.add-btn');
-  if (!btn) return;
-  e.preventDefault();
-  e.stopPropagation();
-  const id = parseInt(btn.dataset.id);
-  const nombre = btn.dataset.name;
-  const precio = parseFloat(String(btn.dataset.price).replace(',', '.'));
-  if (id && nombre && !isNaN(precio)) {
-    addToCart(btn, id, nombre, precio);
-  }
-});
-
-function save(){ localStorage.setItem('bs_cart', JSON.stringify(cart)); }
-
-function renderCart(){
-  const body = document.getElementById('cartBody');
-  const footer = document.getElementById('cartFooter');
-  const fab = document.getElementById('cartFab');
-  const count = cart.reduce((s,i)=>s+i.qty,0);
-  const total = cart.reduce((s,i)=>s+i.qty*i.precio,0);
-  document.getElementById('cartCount').textContent = count;
-  fab.style.display = count > 0 ? 'flex' : 'none';
-  if(cart.length===0){
-    body.innerHTML='<div class="empty-cart"><i class="bi bi-bag-x"></i><p>Tu pedido está vacío</p></div>';
-    footer.style.display='none'; return;
-  }
-  body.innerHTML = cart.map(i=>`
+    function renderCart() {
+      const body = document.getElementById('cartBody');
+      const footer = document.getElementById('cartFooter');
+      const fab = document.getElementById('cartFab');
+      const count = cart.reduce((s, i) => s + i.qty, 0);
+      const total = cart.reduce((s, i) => s + i.qty * i.precio, 0);
+      document.getElementById('cartCount').textContent = count;
+      fab.style.display = count > 0 ? 'flex' : 'none';
+      if (cart.length === 0) {
+        body.innerHTML = '<div class="empty-cart"><i class="bi bi-bag-x"></i><p>Tu pedido está vacío</p></div>';
+        footer.style.display = 'none'; return;
+      }
+      body.innerHTML = cart.map(i => `
     <div class="cart-item">
       <div>
         <div class="ci-name">${i.nombre}</div>
-        <div class="ci-price">$${(i.precio).toLocaleString('es-CO')} c/u &nbsp;·&nbsp; Sub: $${(i.precio*i.qty).toLocaleString('es-CO')}</div>
+        <div class="ci-price">$${(i.precio).toLocaleString('es-CO')} c/u &nbsp;·&nbsp; Sub: $${(i.precio * i.qty).toLocaleString('es-CO')}</div>
       </div>
       <div class="qty-ctrl">
         <button class="qty-btn" onclick="chg(${i.id},-1)">−</button>
@@ -800,81 +1582,82 @@ function renderCart(){
       </div>
     </div>
   `).join('');
-  document.getElementById('cartTotal').textContent = '$'+total.toLocaleString('es-CO');
-  footer.style.display='block';
-}
+      document.getElementById('cartTotal').textContent = '$' + total.toLocaleString('es-CO');
+      footer.style.display = 'block';
+    }
 
-function openCart(){ document.getElementById('cartOverlay').classList.add('open'); }
-function closeCart(){ document.getElementById('cartOverlay').classList.remove('open'); }
-function chg(id, d){
-  const idx = cart.findIndex(i => i.id === id);
-  if(idx >= 0){ 
-    cart[idx].qty += d; 
-    if(cart[idx].qty <= 0) cart.splice(idx,1); 
-  }
-  save(); renderCart();
-}
+    function openCart() { document.getElementById('cartOverlay').classList.add('open'); }
+    function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); }
+    function chg(id, d) {
+      const idx = cart.findIndex(i => i.id === id);
+      if (idx >= 0) {
+        cart[idx].qty += d;
+        if (cart[idx].qty <= 0) cart.splice(idx, 1);
+      }
+      save(); renderCart();
+    }
 
-renderCart();
+    renderCart();
 
-/* ── FALLBACK IMAGES ── */
-(function(){
-  const imgPool = {
-    'Hamburguesas': [
-      'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80',
-      'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&q=80',
-      'https://images.unsplash.com/photo-1586816001966-79b736744398?w=400&q=80',
-      'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=400&q=80',
-      'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&q=80',
-      'https://images.unsplash.com/photo-1594212202214-726dbdfd77af?w=400&q=80',
-      'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&q=80',
-      'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&q=80',
-      'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&q=80',
-      'https://images.unsplash.com/photo-1520072959219-c595dc870360?w=400&q=80',
-      'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&q=80',
-      'https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=400&q=80',
-      'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80',
-      'https://images.unsplash.com/photo-1525164286253-04e68b9d94c6?w=400&q=80',
-      'https://images.unsplash.com/photo-1547584370-2cc98b8b8dc8?w=400&q=80',
-      'https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?w=400&q=80',
-      'https://images.unsplash.com/photo-1615719413546-198b25453f85?w=400&q=80',
-      'https://images.unsplash.com/photo-1544148103-0773bf10d330?w=400&q=80',
-      'https://images.unsplash.com/photo-1608767221gy-4524c88016cb?w=400&q=80',
-      'https://images.unsplash.com/photo-1585238341710-4d3ff484184d?w=400&q=80'
-    ],
-    'Papas': [
-      'https://images.unsplash.com/photo-1576107232684-1279f390859f?w=400&q=80',
-      'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=400&q=80',
-      'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&q=80',
-      'https://images.unsplash.com/photo-1585109649139-366815a0d713?w=400&q=80',
-      'https://images.unsplash.com/photo-1529589510304-b7e994a92f60?w=400&q=80',
-      'https://images.unsplash.com/photo-1639024471283-03518883512d?w=400&q=80'
-    ],
-    'Bebidas': [
-      'https://images.unsplash.com/photo-1622483767028-fd167959c73d?w=400&q=80',
-      'https://images.unsplash.com/photo-1581006852262-e4307cf6283a?w=400&q=80',
-      'https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=400&q=80',
-      'https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&q=80',
-      'https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?w=400&q=80',
-      'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=400&q=80'
-    ],
-    'Combos': [
-      'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&q=80',
-      'https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?w=400&q=80',
-      'https://images.unsplash.com/photo-1544148103-0773bf10d330?w=400&q=80',
-      'https://images.unsplash.com/photo-1615719413546-198b25453f85?w=400&q=80',
-      'https://images.unsplash.com/photo-1594212202214-726dbdfd77af?w=400&q=80',
-      'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&q=80'
-    ]
-  };
+    /* ── FALLBACK IMAGES ── */
+    (function () {
+      const imgPool = {
+        'Hamburguesas': [
+          'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80',
+          'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400&q=80',
+          'https://images.unsplash.com/photo-1586816001966-79b736744398?w=400&q=80',
+          'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=400&q=80',
+          'https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&q=80',
+          'https://images.unsplash.com/photo-1594212202214-726dbdfd77af?w=400&q=80',
+          'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&q=80',
+          'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&q=80',
+          'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&q=80',
+          'https://images.unsplash.com/photo-1520072959219-c595dc870360?w=400&q=80',
+          'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&q=80',
+          'https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=400&q=80',
+          'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80',
+          'https://images.unsplash.com/photo-1525164286253-04e68b9d94c6?w=400&q=80',
+          'https://images.unsplash.com/photo-1547584370-2cc98b8b8dc8?w=400&q=80',
+          'https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?w=400&q=80',
+          'https://images.unsplash.com/photo-1615719413546-198b25453f85?w=400&q=80',
+          'https://images.unsplash.com/photo-1544148103-0773bf10d330?w=400&q=80',
+          'https://images.unsplash.com/photo-1608767221gy-4524c88016cb?w=400&q=80',
+          'https://images.unsplash.com/photo-1585238341710-4d3ff484184d?w=400&q=80'
+        ],
+        'Papas': [
+          'https://images.unsplash.com/photo-1576107232684-1279f390859f?w=400&q=80',
+          'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=400&q=80',
+          'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&q=80',
+          'https://images.unsplash.com/photo-1585109649139-366815a0d713?w=400&q=80',
+          'https://images.unsplash.com/photo-1529589510304-b7e994a92f60?w=400&q=80',
+          'https://images.unsplash.com/photo-1639024471283-03518883512d?w=400&q=80'
+        ],
+        'Bebidas': [
+          'https://images.unsplash.com/photo-1622483767028-fd167959c73d?w=400&q=80',
+          'https://images.unsplash.com/photo-1581006852262-e4307cf6283a?w=400&q=80',
+          'https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=400&q=80',
+          'https://images.unsplash.com/photo-1546171753-97d7676e4602?w=400&q=80',
+          'https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?w=400&q=80',
+          'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=400&q=80'
+        ],
+        'Combos': [
+          'https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&q=80',
+          'https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?w=400&q=80',
+          'https://images.unsplash.com/photo-1544148103-0773bf10d330?w=400&q=80',
+          'https://images.unsplash.com/photo-1615719413546-198b25453f85?w=400&q=80',
+          'https://images.unsplash.com/photo-1594212202214-726dbdfd77af?w=400&q=80',
+          'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&q=80'
+        ]
+      };
 
-  document.querySelectorAll('img[data-fallback-id]').forEach(function(img){
-    const id = parseInt(img.dataset.fallbackId) || 0;
-    const cat = img.dataset.category || 'Hamburguesas';
-    const pool = imgPool[cat] || imgPool['Hamburguesas'];
-    img.src = pool[id % pool.length];
-  });
-})();
-</script>
+      document.querySelectorAll('img[data-fallback-id]').forEach(function (img) {
+        const id = parseInt(img.dataset.fallbackId) || 0;
+        const cat = img.dataset.category || 'Hamburguesas';
+        const pool = imgPool[cat] || imgPool['Hamburguesas'];
+        img.src = pool[id % pool.length];
+      });
+    })();
+  </script>
 </body>
+
 </html>

@@ -54,21 +54,7 @@
       </table>
     </div>
 
-    <!-- Agregar nuevo producto -->
-    <div class="card-dark p-3 mt-3">
-      <h4 style="color:var(--accent); margin-bottom:1rem;">➕ Agregar Producto</h4>
-      <form method="POST" action="{% url 'agregar_item_pedido' pedido.pk %}" style="display:flex; gap:1rem; align-items:center;">
-        {% csrf_token %}
-        <select name="producto_id" class="form-control" required style="flex:1;">
-          <option value="">Seleccionar producto...</option>
-          {% for prod in productos %}
-          <option value="{{ prod.pk }}">{{ prod.nombre }} - ${{ prod.precio|floatformat:0 }}</option>
-          {% endfor %}
-        </select>
-        <input type="number" name="cantidad" value="1" min="1" class="form-control" style="width:80px;" required>
-        <button type="submit" class="btn-accent">Agregar</button>
-      </form>
-    </div>
+
   </div>
 
   <div class="card-dark p-3" style="align-self:start;">
