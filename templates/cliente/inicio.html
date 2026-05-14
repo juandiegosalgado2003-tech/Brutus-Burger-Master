@@ -297,6 +297,7 @@
       content:'';position:absolute;inset:0;
       background:linear-gradient(135deg,rgba(255,107,0,0.04),transparent);
       opacity:0;transition:opacity .25s;border-radius:18px;
+      pointer-events:none;
     }
     .prod-card:hover{
       border-color:rgba(255,107,0,.5);
@@ -335,11 +336,12 @@
     .add-btn{
       background:linear-gradient(135deg,var(--accent),var(--accent2));
       color:white;border:none;border-radius:50px;
-      padding:.45rem 1rem;font-size:.8rem;font-weight:700;
+      padding:.5rem 1.2rem;font-size:.82rem;font-weight:700;
       cursor:pointer;transition:all .18s;
-      display:flex;align-items:center;gap:.3rem;
+      display:inline-flex;align-items:center;gap:.4rem;
       text-transform:uppercase;letter-spacing:.05em;
       box-shadow:0 4px 14px rgba(255,107,0,0.35);
+      position:relative;z-index:10;
     }
     .add-btn:hover{transform:scale(1.07);box-shadow:0 6px 20px rgba(255,107,0,0.55)}
     .add-btn:active{transform:scale(.96)}
@@ -611,7 +613,7 @@
           <div class="prod-desc">{{ p.descripcion }}</div>
           <div class="prod-foot">
             <span class="prod-price">${{ p.precio|floatformat:0 }}</span>
-            <button class="add-btn" onclick="addToCart(event, {{ p.pk }},'{{ p.nombre|escapejs }}',{{ p.precio|unlocalize }})">
+            <button class="add-btn" type="button" data-id="{{ p.pk }}" data-name="{{ p.nombre|escapejs }}" data-price="{{ p.precio }}">
               <i class="bi bi-plus-lg"></i> Agregar
             </button>
           </div>
@@ -639,7 +641,7 @@
           <div class="prod-desc">{{ p.descripcion }}</div>
           <div class="prod-foot">
             <span class="prod-price">${{ p.precio|floatformat:0 }}</span>
-            <button class="add-btn" onclick="addToCart(event, {{ p.pk }},'{{ p.nombre|escapejs }}',{{ p.precio|unlocalize }})">
+            <button class="add-btn" type="button" data-id="{{ p.pk }}" data-name="{{ p.nombre|escapejs }}" data-price="{{ p.precio }}">
               <i class="bi bi-plus-lg"></i> Agregar
             </button>
           </div>
@@ -747,16 +749,29 @@
 /* ── CARRITO ── */
 let cart = JSON.parse(localStorage.getItem('bs_cart') || '[]');
 
-function addToCart(e, id, nombre, precio) {
+function addToCart(btn, id, nombre, precio) {
   const idx = cart.findIndex(i => i.id === id);
   if(idx >= 0) cart[idx].qty++;
-  else cart.push({id, nombre, precio: parseFloat(precio), qty: 1, comentarios: ''});
+  else cart.push({id, nombre, precio: precio, qty: 1, comentarios: ''});
   save(); renderCart(); openCart();
-  const btn = e.currentTarget || e.target;
   btn.innerHTML = '<i class="bi bi-check-lg"></i> Listo';
   btn.style.background = 'linear-gradient(135deg,#22c55e,#16a34a)';
   setTimeout(()=>{ btn.innerHTML = '<i class="bi bi-plus-lg"></i> Agregar'; btn.style.background=''; }, 1200);
 }
+
+/* Event delegation for all add-to-cart buttons */
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.add-btn');
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const id = parseInt(btn.dataset.id);
+  const nombre = btn.dataset.name;
+  const precio = parseFloat(String(btn.dataset.price).replace(',', '.'));
+  if (id && nombre && !isNaN(precio)) {
+    addToCart(btn, id, nombre, precio);
+  }
+});
 
 function save(){ localStorage.setItem('bs_cart', JSON.stringify(cart)); }
 

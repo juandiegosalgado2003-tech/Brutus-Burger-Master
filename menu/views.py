@@ -35,9 +35,14 @@ def producto_crear(request):
 @never_cache
 def producto_editar(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
+    imagen_anterior = producto.imagen
     form = ProductoForm(request.POST or None, request.FILES or None, instance=producto)
     if form.is_valid():
-        form.save()
+        obj = form.save(commit=False)
+        # Si no se subió nueva imagen y no se marcó "borrar", mantener la anterior
+        if not request.FILES.get('imagen') and not request.POST.get('imagen-clear'):
+            obj.imagen = imagen_anterior
+        obj.save()
         messages.success(request, 'Producto actualizado.')
         return redirect('carta_lista')
     return render(request, 'menu/producto_form.html', {'form': form, 'titulo': 'Editar Producto', 'producto': producto})
