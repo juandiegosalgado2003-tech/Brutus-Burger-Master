@@ -71,7 +71,7 @@ def pedido_confirmado(request, pk):
 @never_cache
 def panel_personal(request):
     pedidos = Pedido.objects.exclude(estado='entregado').exclude(estado='cancelado')
-    hoy = timezone.now().date()
+    hoy = timezone.localtime(timezone.now()).date()
     pedidos_hoy_completados = Pedido.objects.filter(estado__in=['entregado', 'cancelado'], fecha_creacion__date=hoy)
     return render(request, 'pedidos/panel.html', {
         'pedidos': pedidos, 

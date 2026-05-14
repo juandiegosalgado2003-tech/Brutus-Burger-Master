@@ -78,6 +78,26 @@
   <div class="card">
     <div class="card-title"><i class="bi bi-cart3"></i> Tu selección</div>
     <div id="resumenItems"><p style="color:var(--text3);text-align:center">Cargando...</p></div>
+    
+    <div style="margin-top:1rem; padding-top:1rem; border-top:1px dashed var(--border);">
+      <label class="form-label" style="margin-bottom:0.8rem; text-transform:none; letter-spacing:normal; font-size:0.85rem;"><i class="bi bi-plus-circle" style="color:var(--accent);"></i> ¿Deseas añadir otro producto?</label>
+      <div style="display:flex; gap:0.5rem; align-items:center;">
+        <select id="quickAddProduct" class="form-control" style="flex:1;">
+          <option value="">Selecciona un producto...</option>
+          {% for cat in categorias %}
+          <optgroup label="{{ cat.nombre }}">
+            {% for prod in cat.productos.all %}
+            {% if prod.disponible %}
+            <option value="{{ prod.pk }}" data-name="{{ prod.nombre|escapejs }}" data-price="{{ prod.precio|stringformat:"f" }}">{{ prod.nombre }} - ${{ prod.precio|floatformat:0 }}</option>
+            {% endif %}
+            {% endfor %}
+          </optgroup>
+          {% endfor %}
+        </select>
+        <button type="button" class="submit-btn" style="width:auto; padding:0.65rem 1rem; margin-top:0; border-radius:8px;" onclick="quickAdd()">Añadir</button>
+      </div>
+    </div>
+
     <div class="total-row">
       <span style="font-weight:600">Total a pagar</span>
       <span class="total-val" id="resumenTotal">$0</span>
@@ -244,6 +264,26 @@ document.getElementById('pedidoForm').addEventListener('submit', e => {
 
 function toggleCard(show) {
   document.getElementById('cardFields').style.display = show ? 'block' : 'none';
+}
+
+function quickAdd() {
+  const select = document.getElementById('quickAddProduct');
+  const option = select.options[select.selectedIndex];
+  if (!option.value) return;
+  
+  const id = parseInt(option.value);
+  const nombre = option.getAttribute('data-name');
+  const precio = parseFloat(option.getAttribute('data-price'));
+  
+  const existing = cart.find(i => i.id === id);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ id: id, nombre: nombre, precio: precio, qty: 1 });
+  }
+  saveCart();
+  
+  select.value = ""; // Reset dropdown
 }
 
 renderResumen();

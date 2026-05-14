@@ -9,7 +9,7 @@ from pedidos.models import Pedido, DetallePedido
 @login_required
 @never_cache
 def dashboard(request):
-    hoy = timezone.now().date()
+    hoy = timezone.localtime(timezone.now()).date()
     ventas_hoy = Pedido.objects.filter(fecha_creacion__date=hoy, estado='entregado').aggregate(
         total=Sum('total'), cantidad=Count('id'))
     ventas_semana = Pedido.objects.filter(
