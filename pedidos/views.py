@@ -1,8 +1,10 @@
 import json
+import traceback
+import logging
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.cache import never_cache
 from .models import Pedido, DetallePedido
@@ -10,48 +12,58 @@ from .forms import PedidoClienteForm, EstadoForm
 from menu.models import Producto
 from mesas.models import Mesa
 
+logger = logging.getLogger(__name__)
+
 # ── VISTA CLIENTE: hacer pedido ──────────────────────────────────
 def hacer_pedido(request):
-    categorias_con_productos = __import__('menu.models', fromlist=['Categoria']).Categoria.objects.prefetch_related('productos').filter(productos__disponible=True).distinct()
-    mesas_disponibles = Mesa.objects.filter(disponible=True)
+    try:
+        categorias_con_productos = __import__('menu.models', fromlist=['Categoria']).Categoria.objects.prefetch_related('productos').filter(productos__disponible=True).distinct()
+        mesas_disponibles = Mesa.objects.filter(disponible=True)
 
-    if request.method == 'POST':
-        form = PedidoClienteForm(request.POST)
-        items_json = request.POST.get('items_json', '[]')
-        try:
-            items = json.loads(items_json)
-        except:
-            items = []
+        if request.method == 'POST':
+            form = PedidoClienteForm(request.POST)
+            items_json = request.POST.get('items_json', '[]')
+            try:
+                items = json.loads(items_json)
+            except:
+                items = []
 
-        if form.is_valid() and items:
-            pedido = form.save(commit=False)
-            pedido.save()
-            for item in items:
-                try:
-                    producto = Producto.objects.get(pk=item['id'], disponible=True)
-                    DetallePedido.objects.create(
-                        pedido=pedido,
-                        producto=producto,
-                        cantidad=item['cantidad'],
-                        precio_unitario=producto.precio
-                    )
-                except Producto.DoesNotExist:
-                    pass
-            pedido.calcular_total()
-            return redirect('pedido_confirmado', pk=pedido.pk)
-        elif not items:
-            messages.error(request, 'Debes agregar al menos un producto al pedido.')
-    else:
-        form = PedidoClienteForm()
+            if form.is_valid() and items:
+                pedido = form.save(commit=False)
+                pedido.save()
+                for item in items:
+                    try:
+                        producto = Producto.objects.get(pk=item['id'], disponible=True)
+                        DetallePedido.objects.create(
+                            pedido=pedido,
+                            producto=producto,
+                            cantidad=item['cantidad'],
+                            precio_unitario=producto.precio
+                        )
+                    except Producto.DoesNotExist:
+                        pass
+                pedido.calcular_total()
+                return redirect('pedido_confirmado', pk=pedido.pk)
+            elif not items:
+                messages.error(request, 'Debes agregar al menos un producto al pedido.')
+        else:
+            form = PedidoClienteForm()
 
-    return render(request, 'cliente/hacer_pedido.html', {
-        'form': form,
-        'categorias': categorias_con_productos,
-    })
+        return render(request, 'cliente/hacer_pedido.html', {
+            'form': form,
+            'categorias': categorias_con_productos,
+        })
+    except Exception as e:
+        logger.error(f"Error en hacer_pedido: {traceback.format_exc()}")
+        return HttpResponse(f"<h2>Error en hacer_pedido</h2><pre>{traceback.format_exc()}</pre>", status=500)
 
 def pedido_confirmado(request, pk):
-    pedido = get_object_or_404(Pedido, pk=pk)
-    return render(request, 'cliente/pedido_confirmado.html', {'pedido': pedido})
+    try:
+        pedido = get_object_or_404(Pedido, pk=pk)
+        return render(request, 'cliente/pedido_confirmado.html', {'pedido': pedido})
+    except Exception as e:
+        logger.error(f"Error en pedido_confirmado: {traceback.format_exc()}")
+        return HttpResponse(f"<h2>Error en pedido_confirmado</h2><pre>{traceback.format_exc()}</pre>", status=500)
 
 # ── VISTAS PERSONAL ──────────────────────────────────────────────
 @login_required
