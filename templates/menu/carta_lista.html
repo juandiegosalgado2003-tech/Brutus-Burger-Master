@@ -13,7 +13,10 @@
 <div class="card-dark mb-3" style="overflow:hidden;">
   <div style="padding:0.75rem 1.5rem; background:var(--bg-card2); display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border);">
     <h4 style="margin:0; color:var(--accent);">{{ cat.icono }} {{ cat.nombre }}</h4>
-    <a href="/personal/carta/categoria/{{ cat.pk }}/editar/" class="btn-outline-custom btn-sm-custom"><i class="bi bi-pencil"></i> Editar categoría</a>
+    <div style="display:flex;gap:0.4rem;">
+      <a href="/personal/carta/categoria/{{ cat.pk }}/editar/" class="btn-outline-custom btn-sm-custom"><i class="bi bi-pencil"></i> Editar categoría</a>
+      <a href="/personal/carta/categoria/{{ cat.pk }}/eliminar/" class="btn-danger-custom btn-sm-custom"><i class="bi bi-trash"></i> Eliminar</a>
+    </div>
   </div>
   {% if cat.productos.all %}
   <table class="table-dark-custom">

@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from django.db.models import Sum, Count, F
 from django.utils import timezone
 from datetime import timedelta
 from pedidos.models import Pedido, DetallePedido
 
 @login_required
+@never_cache
 def dashboard(request):
     hoy = timezone.now().date()
     ventas_hoy = Pedido.objects.filter(fecha_creacion__date=hoy, estado='entregado').aggregate(

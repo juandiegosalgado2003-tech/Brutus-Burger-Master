@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.views.decorators.cache import never_cache
 from .models import Pedido, DetallePedido
 from .forms import PedidoClienteForm, EstadoForm
 from menu.models import Producto
@@ -54,11 +55,13 @@ def pedido_confirmado(request, pk):
 
 # ── VISTAS PERSONAL ──────────────────────────────────────────────
 @login_required
+@never_cache
 def panel_personal(request):
     pedidos = Pedido.objects.exclude(estado='entregado').exclude(estado='cancelado')
     return render(request, 'pedidos/panel.html', {'pedidos': pedidos, 'estados': Pedido.ESTADOS})
 
 @login_required
+@never_cache
 def lista_pedidos(request):
     estado = request.GET.get('estado', '')
     pedidos = Pedido.objects.all()
@@ -71,6 +74,7 @@ def lista_pedidos(request):
     })
 
 @login_required
+@never_cache
 def detalle_pedido(request, pk):
     pedido = get_object_or_404(Pedido, pk=pk)
     form_estado = EstadoForm(request.POST or None, instance=pedido)
